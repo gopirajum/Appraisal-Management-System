@@ -15,16 +15,15 @@ var routerApp = angular.module('appriasalManagement', [
   'angularLoad'
 ]);
 routerApp.config(function($stateProvider, $urlRouterProvider) {
-    
   $urlRouterProvider.otherwise('/');
   $stateProvider
   .state('root', {
     url: '/',
-    templateUrl: '/angular/views/shared/home.html'
+    templateUrl: '/angular/views/auth/login.html'
   })
-  .state('login', {
-    url: '/login',
-    templateUrl: '/angular/views/auth/login.html'     
+  .state('home', {
+    url: '/home',
+    templateUrl: '/angular/views/shared/home.html'     
   })
   .state('reset_password', {
     url: '/reset_password',
