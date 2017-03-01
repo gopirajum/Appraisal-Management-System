@@ -1,5 +1,15 @@
 .sample {
 	background-image: url('./background.png');
+ width: 100%;
+ height: 100%;
+ margin-top:-20px;
   background-size: cover;
   font-size: 30px;
-}
+  }
+  footer {
+      background-color: #006666;
+      color: #ecf0f1;
+      padding: 4px;
+      position: inherit;
+      /*top:100%;*/
+        }
