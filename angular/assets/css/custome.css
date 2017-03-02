@@ -1,9 +1,30 @@
+html {
+  height: 100%;
+  box-sizing: border-box;
+}
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
 body {
   overflow-x: hidden;
   font-family: 'cantarellregular';
   font-weight: normal;
   font-style: normal;
-  background-color: #FFFEFE;
+  position: relative;
+  margin: 0;
+  min-height: 100%;
+}
+footer {
+  position: static;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  padding: 1rem;
+  text-align: center;
+  background-color: #8e8e8e;
+  color: #fff;
 }
 .sample {
   width: 100%;
@@ -23,7 +44,7 @@ body {
 	width: 95%;
 }
 .login-top {
-	margin-top: 30%;
+	margin-top: 25%;
 	padding: 10%;
 }
 .navtech_logo {
@@ -31,6 +52,14 @@ body {
 }
 .pull-center {
 	text-align: center;
+}
+.container-bottom {
+  margin-top: 50px;
+  margin-bottom: 10px;
+}
+.well {
+  opacity: 0.95;
+  padding: 40px;
 }
 
 /* Small devices (tablets, 768px and up) */
