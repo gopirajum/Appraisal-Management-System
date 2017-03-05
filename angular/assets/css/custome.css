@@ -48,7 +48,7 @@ footer {
 	padding: 10%;
 }
 .navtech_logo {
-	width: 350px;
+	width: 90%;
 }
 .pull-center {
 	text-align: center;
@@ -60,25 +60,4 @@ footer {
 .well {
   opacity: 0.95;
   padding: 40px;
-}
-
-/* Small devices (tablets, 768px and up) */
-@media (min-width: 768px) { 
-  .navtech_logo {
-		width: 240px;
-	}
-}
-
-/* Medium devices (desktops, 992px and up) */
-@media (min-width: 992px) { 
-  .navtech_logo {
-		width: 280px;
-	}
-}
-
-/* Large devices (large desktops, 1200px and up) */
-@media (min-width: 1200px) { 
-  .navtech_logo {
-		width: 400px;
-	}
 }
