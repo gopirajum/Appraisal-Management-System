@@ -6,22 +6,24 @@
 			</div>
 			<div class="well">
 				<h4 class="pull-center logo">Sign in to Appraisal Management</h4>
-		    <form name="login_form">
+		    <form name="login_form" novalidate>
 		      <md-input-container class="md-block">
 		        <label>Email</label>
-		        <input required md-no-asterisk name="description" ng-model="project.description">
-		        <div ng-messages="projectForm.description.$error">
-		          <div ng-message="required">This is required.</div>
+		        <input type="email" required md-no-asterisk name="user_email" ng-model="project.email">
+		        <div ng-messages="login_form.user_email.$error">
+		          <div ng-message="required">Email is required.</div>
+		          <div ng-message="email">Invalid Email Address</div>
 		        </div>
 		      </md-input-container>
 		      <md-input-container class="md-block">
 		        <label>Password</label>
-		        <input required md-no-asterisk name="description" ng-model="project.description">
-		        <div ng-messages="projectForm.description.$error">
-		          <div ng-message="required">This is required.</div>
+		        <input type="password" required md-no-asterisk name="password" ng-model="project.password" ng-minlength=8 >
+		        <div ng-messages="login_form.password.$error">
+		          <div ng-message="required">Password is required.</div>
+		          <div ng-message="minlength">Password should contain minimum 8 characters</div>
 		        </div>
 		      </md-input-container>
-		      <md-button class="md-raised md-primary login">Login</md-button>
+		      <md-button class="md-raised md-primary login" ng-disabled="login_form.$invalid">Login</md-button>
 		    </form>
 		  </div>
 		</div>
