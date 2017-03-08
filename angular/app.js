@@ -1,5 +1,5 @@
 // app.js
-var routerApp = angular.module('appriasalManagement', [
+var routerApp = angular.module('appraisalManagement', [
   'ngAnimate',
   'ui.router',
   'ngCookies',
@@ -12,22 +12,34 @@ var routerApp = angular.module('appriasalManagement', [
   'LocalStorageModule',
   'toaster',
   'ngFileUpload',
-  'angularLoad'
+  'angularLoad',
+  'ngMdIcons'
 ]);
 routerApp.config(function($stateProvider, $urlRouterProvider) {
-    
   $urlRouterProvider.otherwise('/');
   $stateProvider
   .state('root', {
     url: '/',
-    templateUrl: '/angular/views/shared/home.html'
-  })
-  .state('login', {
-    url: '/login',
-    templateUrl: '/angular/views/auth/login.html'     
+    templateUrl: '/angular/views/auth/login.html'
   })
   .state('reset_password', {
     url: '/reset_password',
     templateUrl: '/angular/views/auth/reset_password.html'     
+  })
+  .state('home', {
+    url: '/home',
+    templateUrl: '/angular/views/shared/home.html'
+  })
+  .state('home.profile', {
+    url: '/profile',
+    templateUrl: '/angular/views/shared/profile.html'
+  })
+  .state('home.add_employee', {
+    url: '/add_employee',
+    views: {
+      'container': {
+        templateUrl: '/angular/views/admin/add_employee.html'
+      }
+    }
   });
 });
