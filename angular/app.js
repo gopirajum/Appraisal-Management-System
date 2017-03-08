@@ -1,5 +1,5 @@
 // app.js
-var routerApp = angular.module('appriasalManagement', [
+var routerApp = angular.module('appraisalManagement', [
   'ngAnimate',
   'ui.router',
   'ngCookies',
