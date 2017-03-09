@@ -4,6 +4,10 @@ var bodyParser = require('body-parser');
 router.use(bodyParser.json()); // for parsing application/json
 router.use(bodyParser.urlencoded({ extended: true })); // for parsing       application/x-www-form-urlencoded
 
+//authentication_node_service module
+var authentication_node_service =require('./authentication_node_service.js');
+var authentication_node_serviceInstance= new authentication_node_service(); 
+
 //Middle ware that is specific to this router
 router.use(function timeLog(req, res, next) {
   console.log('Time: ', Date.now());
@@ -14,8 +18,17 @@ router.use(function timeLog(req, res, next) {
 // Define the home page route
 router.post('/auth', function(req, res) {
   //console.log("req  email:"+req.body.email+" password: "+req.body.password);
+  authentication_node_serviceInstance.authenticate(req.body,function(status)
+  {
+  	if(status=="ok"){res.send('success');}
+  	else{
+  		console.log("in routes.js else part");
+  		res.status(400).send({
+   		message: 'This is an error!'
+		});
+  }
+});
   
-  res.send('success');
 });
 
 // Define the about route
