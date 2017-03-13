@@ -1,102 +1,79 @@
 <div class="col-md-offset-2 col-md-8 col-sm-offset-3 col-sm-6 col-xs-offset-2 col-xs-8">
-	<div layout="column" ng-cloak>
-  <md-content layout-padding>
-    <form name="projectForm" class="test">
-      <md-input-container class="md-block">
-        <label>Description</label>
-        <input md-maxlength="30" required md-no-asterisk name="description" ng-model="project.description">
-        <div ng-messages="projectForm.description.$error">
-          <div ng-message="required">This is required.</div>
-          <div ng-message="md-maxlength">The description must be less than 30 characters long.</div>
-        </div>
-      </md-input-container>
+ <div layout="column" ng-cloak>
+ <md-content layout-padding>
+   <form name="projectForm" class="test">
+     <md-input-container class="md-block">
+       <label>Employee Name</label>
+       <input md-maxlength="30" required name="ename" ng-model="project.name">
+       <div ng-messages="projectForm.ename.$error">
+         <div ng-message="required">This is required.</div>
+         <div ng-message="md-maxlength">Your Name must be less than 30 characters long.</div>
+       </div>
+     </md-input-container>
 
-      <div layout="row">
-        <md-input-container flex="50">
-          <label>Client Name</label>
-          <input required name="clientName" ng-model="project.clientName">
-          <div ng-messages="projectForm.clientName.$error">
-            <div ng-message="required">This is required.</div>
-          </div>
-        </md-input-container>
+     <div layout="row">
+       <md-input-container flex="50">
+         <label>Employee Code</label>
+         <input name="eCode" ng-model="project.Code" ng-readonly="true">
+         <div ng-messages="projectForm.eCode.$error"></div>
+       </md-input-container>
 
-        <md-input-container flex="50">
-          <label>Project Type</label>
-          <md-select name="type" ng-model="project.type" required>
-            <md-option value="app">Application</md-option>
-            <md-option value="web">Website</md-option>
-          </md-select>
-        </md-input-container>
-      </div>
+       <md-input-container flex="50">
+         <input type="date" ng-model="project.date" placeholder="Enter Date Of Birth" value="{{ date | date: 'yyyy-MM-dd' }}" />
+       </md-input-container>
+     </div>
 
-      <md-input-container class="md-block">
-        <label>Client Email</label>
-        <input required type="email" name="clientEmail" ng-model="project.clientEmail"
-               minlength="10" maxlength="100" ng-pattern="/^.+@.+\..+$/" />
+     <div layout="row">
+       <md-input-container flex="50">
+         <label>Father's Name</label>
+         <input name="fName" ng-model="project.father_name">
+         <div ng-messages="projectForm.eCode.$error">
+         </div>
+       </md-input-container>
 
-        <div ng-messages="projectForm.clientEmail.$error" role="alert">
-          <div ng-message-exp="['required', 'minlength', 'maxlength', 'pattern']">
-            Your email must be between 10 and 100 characters long and look like an e-mail address.
-          </div>
-        </div>
-      </md-input-container>
+       <md-input-container flex="50">
+         <label>Gender</label>
+         <md-select name="Gender" ng-model="project.gender" required>
+           <md-option value="male">Male</md-option>
+           <md-option value="female">Female</md-option>
+           <md-option value="others">Others</md-option>
+         </md-select>
+         </md-input-container>
+     </div>
 
-      <md-input-container class="md-block">
-        <label>Hourly Rate (USD)</label>
-        <input required type="number" step="any" name="rate" ng-model="project.rate" min="800"
-               max="4999" ng-pattern="/^1234$/" />
+     <md-input-container class="md-block">
+       <label>Employee Email</label>
+       <input required type="email" name="eEmail" ng-model="project.email"
+              minlength="10" maxlength="100" ng-pattern="/^.+@.+\..+$/" />
 
-        <div ng-messages="projectForm.rate.$error" multiple md-auto-hide="false">
-          <div ng-message="required">
-            You've got to charge something! You can't just <b>give away</b> a Missile Defense
-            System.
-          </div>
+       <div ng-messages="projectForm.eEmail.$error" role="alert">
+         <div ng-message-exp="['required', 'minlength', 'maxlength', 'pattern']">
+           Your email must be between 10 and 100 characters long and look like an e-mail address.
+         </div>
+       </div>
+     </md-input-container>
 
-          <div ng-message="min">
-            You should charge at least $800 an hour. This job is a big deal... if you mess up,
-            everyone dies!
-          </div>
+     <md-input-container class="md-block">
+       <label>Phone Number</label>
+       <input required type="number" step="any" name="phno" ng-model="project.phone_number" ng-pattern="/^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/" />
 
-          <div ng-message="pattern">
-            You should charge exactly $1,234.
-          </div>
+       <div ng-messages="projectForm.phno.$error" multiple md-auto-hide="false">
+         <div ng-message="required">
+           You must enter a phone number.
+         </div>
 
-          <div ng-message="max">
-            {{projectForm.rate.$viewValue | currency:"$":0}} an hour? That's a little ridiculous. I
-            doubt even Bill Clinton could afford that.
-          </div>
-        </div>
-      </md-input-container>
+         <div ng-message="pattern">Must be a valid 10 digit phone number</div>
 
-      <md-input-container class="md-block">
-        <md-checkbox name="tos" ng-model="project.tos" required>
-          I accept the terms of service.
-        </md-checkbox>
-        <div ng-messages="projectForm.tos.$error" multiple md-auto-hide="false">
-          <div ng-message="required">
-            You must accept the terms of service before you can proceed.
-          </div>
-        </div>
-      </md-input-container>
+       </div>
+     </md-input-container>
 
-      <md-input-container class="md-block">
-        <md-switch class="md-primary" name="special" ng-model="project.special" required>
-          Enable special options.
-        </md-switch>
-        <div ng-messages="projectForm.special.$error" multiple>
-          <div ng-message="required">
-            You must enable all special options before you can proceed.
-          </div>
-        </div>
-      </md-input-container>
-      <div>
-        <md-button type="submit">Submit</md-button>
-      </div>
+     <div layout="row" layout-align="end">
+     <div flex="30">
+     <md-button align="center" class="md-raised md-primary login" ng-click="add_employee(project)">Submit</md-button>
+     </div>
+     </div>
 
-      <p style="font-size:.8em; width: 100%; text-align: center;">
-        Make sure to include <a href="https://docs.angularjs.org/api/ngMessages" target="_blank">ngMessages</a> module when using ng-message markup.
-      </p>
-    </form>
-  </md-content>
+   </form>
+ </md-content>
 </div>
 </div>

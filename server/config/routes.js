@@ -31,6 +31,22 @@ router.post('/auth', function(req, res) {
   
 });
 
+
+router.post('/addEmployee', function(req, res) {
+
+  authentication_node_serviceInstance.add_employee(req.body,function(status)
+  {
+  	if(status=="ok"){res.send('success');}
+  	else{
+  		console.log("in routes.js else part");
+  		res.status(400).send({
+   		message: 'This is an error!'
+		});
+  }
+});
+  
+});
+
 // Define the about route
 router.get('/about', function(req, res) {
   res.send('About us');

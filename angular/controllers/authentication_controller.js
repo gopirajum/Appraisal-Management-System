@@ -11,5 +11,15 @@ appraisalManagement_controllers.controller('AuthCtrl',['$scope', '$rootScope', '
       
     });
   }
+
+  $scope.add_employee = function(details) {
+    //console.log("in auth contoller");
+
+    users.add_employee(details).then(function(response){
+      
+         $state.go('home.profile');
+      
+    });
+  }
   
 }]);
