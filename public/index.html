@@ -7,9 +7,12 @@
     <title>Appriasal Management</title>
    	<!-- Css -->
     <link rel="stylesheet" type="text/css" href="bower_components/bootstrap/dist/css/bootstrap.css">
-    <link rel="stylesheet" type="text/css" href="bower_components/angular-material/angular-material.min.css">
-    <link rel="stylesheet" type="text/css" href="bower_components/angular-material/angular-material.min.css">
+    <link rel="stylesheet" type="text/css" href="bower_components/angular-material/angular-material.css">
+    <link rel="stylesheet" type="text/css" href="bower_components/angular-material-icons/angular-material-icons.css" >
     <link rel="stylesheet" href="bower_components/AngularJS-Toaster/toaster.css" />
+    <link rel="stylesheet" href="angular/assets/css/cantarell.css" />
+    <link rel="stylesheet" href="angular/assets/css/navbar.css" />
+    <link rel="stylesheet" href="angular/assets/css/custome.css" />
 
     <!-- Javascript-->
 		<script src="bower_components/jquery/dist/jquery.min.js"></script>
@@ -23,6 +26,7 @@
 		<script src="bower_components/angular-sanitize/angular-sanitize.min.js"></script>
 		<script src="bower_components/angular-aria/angular-aria.js"></script>
 		<script src="bower_components/angular-material/angular-material.js"></script>
+    <script src="bower_components/angular-material-icons/angular-material-icons.js"></script>
 		<script src="bower_components/angular-messages/angular-messages.min.js"></script>
 		<script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
 		<script src="bower_components/AngularJS-Toaster/toaster.min.js"></script>
@@ -32,12 +36,12 @@
 		</script>
 		<!-- Angular Config -->
 		<script src="/angular/app.js"></script>
-		<!-- Angular Controllers -->
-		<script src="/angular/controllers/authentication_controller.js"></script>
 		<!-- Angular Services -->
 		<script src="/angular/services/authentication_service.js"></script>
+		<!-- Angular Controllers -->
+		<script src="/angular/controllers/authentication_controller.js"></script>
   </head>
-  <body ng-app="appriasalManagement">
+  <body ng-app="appraisalManagement" ng-controller="AuthCtrl">
     <ui-view></ui-view>
   </body>
 </html>
