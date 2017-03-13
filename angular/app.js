@@ -32,7 +32,11 @@ routerApp.config(function($stateProvider, $urlRouterProvider) {
   })
   .state('home.profile', {
     url: '/profile',
-    templateUrl: '/angular/views/shared/profile.html'
+    views: {
+      'container': {
+        templateUrl: '/angular/views/shared/profile.html',
+      }
+    }
   })
   .state('home.add_employee', {
     url: '/add_employee',

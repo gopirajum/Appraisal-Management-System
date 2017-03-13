@@ -12,6 +12,7 @@ body {
   font-family: 'cantarellregular';
   font-weight: normal;
   font-style: normal;
+  background-color: #FFFFFF;
   position: relative;
   margin: 0;
   min-height: 100%;
@@ -25,6 +26,16 @@ footer {
   text-align: center;
   background-color: #8e8e8e;
   color: #fff;
+}
+.md-datepicker-input
+{
+  min-width: 280px;
+  max-width: 328px;
+}
+.test
+{
+  background-color: #FFFFFF;
+  border-color: #FFFFFF;
 }
 .sample {
   width: 100%;
