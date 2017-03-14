@@ -27,8 +27,8 @@ footer {
   background-color: #8e8e8e;
   color: #fff;
 }
-.stackem div {
-    width: 100%;
+.profileLeft{
+  min-height: 500px;
 }
 .border col-md-6
 {
