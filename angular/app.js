@@ -10,7 +10,7 @@ var routerApp = angular.module('appraisalManagement', [
   'ngMessages',
   'ui.bootstrap',
   'LocalStorageModule',
-  'toaster',
+  'toastr',
   'ngFileUpload',
   'angularLoad',
   'ngMdIcons'
