@@ -1,6 +1,7 @@
 html {
   height: 100%;
   box-sizing: border-box;
+  background-color: #FFFFFF;
 }
 *,
 *:before,
@@ -30,6 +31,13 @@ footer {
 .profileLeft{
   min-height: 500px;
 }
+.md-padding{
+  background-color: #FFFFFF;
+}
+md-content.layout-padding._md
+{
+  background-color: #FFFFFF;
+}
 .border col-md-6
 {
   width:100%;
@@ -44,6 +52,11 @@ footer {
 {
   background-color: #FFFFFF;
   border-color: #FFFFFF;
+}
+.img-responsive{
+  display: block; 
+  height: auto;
+  max-width: 100%;
 }
 .sample {
   width: 100%;

@@ -1,35 +1,24 @@
-<div class="container">
-<div class="row">
-     <div class="col-md-3 profileLeft">
-        <div class="imgAbt">
-           <img  width="200" height="220" src="/angular/assets/images/bg-2.jpg">
-        </div>
-        <div><h1>Welcome<br>{{project.name}} !!!</h1></div><br>
-        <div><h3>{{project.designation}}</h3></div>
-     </div>
-    <div class="col-md-9">
-      <div ng-cloak>
-  <md-content>
-    <md-tabs md-dynamic-height md-border-bottom>
-      <md-tab label="Personal Details">
-        <md-content class="md-padding">
-          <div layout="column" ng-cloak>
+ <div layout="column" ng-cloak>
   <md-content layout-padding>
-    <form name="personal_details" class="test">
+    <form name="projectForm" class="test">
+    <div class="col-sm-8">
       <md-input-container class="md-block">
         <label>Employee Name</label>
         <input md-maxlength="30" required name="ename" ng-model="project.name">
-        <div ng-messages="personal_details.ename.$error">
+        <div ng-messages="projectForm.ename.$error">
           <div ng-message="required">This is required.</div>
           <div ng-message="md-maxlength">Your Name must be less than 30 characters long.</div>
         </div>
+
       </md-input-container>
 
       <div layout="row">
         <md-input-container flex="50">
           <label>Employee Code</label>
-          <input name="eCode" ng-model="project.code" ng-readonly="true">
-          <div ng-messages="personal_details.eCode.$error"></div>
+          <input required name="eCode" ng-model="project.code">
+          <div ng-messages="projectForm.eCode.$error">
+            <div ng-message="required">This is required.</div>
+          </div>
         </md-input-container>
 
         <md-input-container flex="50">
@@ -41,60 +30,76 @@
         <md-input-container flex="50">
           <label>Father's Name</label>
           <input name="fName" ng-model="project.father_name">
-          <div ng-messages="personal_details.fName.$error">
+          <div ng-messages="projectForm.fName.$error">
           </div>
         </md-input-container>
 
         <md-input-container flex="50">
           <label>Gender</label>
-          <md-select required name="Gender" ng-model="project.gender">
+          <md-select  required name="Gender" ng-model="project.gender">
             <md-option value="male">Male</md-option>
             <md-option value="female">Female</md-option>
             <md-option value="others">Others</md-option>
           </md-select>
-          <div ng-messages="personal_details.Gender.$error">
+          <div ng-messages="projectForm.Gender.$error">
           <div ng-message="required">This is required.</div>
           </div>
           </md-input-container>
       </div>
 
-      <md-input-container class="md-block">
-        <label>Employee Email</label>
+      <div layout="row">
+        <md-input-container flex="50">
+          <label>Employee Email</label>
         <input required type="email" name="eEmail" ng-model="project.email"
                minlength="10" maxlength="100" ng-pattern="/^.+@.+\..+$/" />
 
-        <div ng-messages="personal_details.eEmail.$error" role="alert">
+        <div ng-messages="projectForm.eEmail.$error" role="alert">
           <div ng-message-exp="['required', 'minlength', 'maxlength', 'pattern']">
             Your email must be between 10 and 100 characters long and look like an e-mail address.
           </div>
         </div>
-      </md-input-container>
+        </md-input-container>
+
+        <md-input-container flex="50">
+          <label>Designation</label>
+          <md-select name="design" ng-model="project.designation">
+            <md-option value="Senior Software Engineer">Senior Software Engineer</md-option>
+            <md-option value="Software Engineer">Software Engineer</md-option>
+            <md-option value="Manager">Manager</md-option>
+            <md-option value="HR">HR</md-option>
+            <md-option value="Intern">Intern</md-option>
+          </md-select>
+          </md-input-container>
+      </div>
 
       <md-input-container class="md-block">
         <label>Phone Number</label>
         <input required type="number" step="any" name="phno" ng-model="project.phone_number" ng-pattern="/^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/" />
 
-        <div ng-messages="personal_details.phno.$error" multiple md-auto-hide="false">
+        <div ng-messages="projectForm.phno.$error" multiple md-auto-hide="false">
           <div ng-message="required">
             You must enter a phone number.
           </div>
 
-          <div ng-message="pattern">Must be a valid 10 digit phone number</div>
+          <div ng-message="pattern">Must be a valid phone number</div>
 
         </div>
       </md-input-container>
 
       <div layout="row" layout-align="end">
       <div flex="30">
-      <md-button align="center" class="md-raised md-primary login">Submit</md-button>
+      <md-button align="center" class="md-raised md-primary login" ng-click="add_employee(project)">Submit</md-button>
       </div>
       </div>
-
-    </form>
-  </md-content>
-</div>
-        </md-content>
-      </md-tab>
+      </div>
+      <div class="col-sm-4">
+          <img  width="200" height="220" src="/angular/assets/images/bg-2.jpg">
+      </div>
+      </form>
+      <md-input-container class="md-block">
+        <div ng-cloak>
+  <md-content>
+    <md-tabs md-dynamic-height md-border-bottom>
       <md-tab label="Official Details">
         <md-content class="md-padding">
           <div layout="column" ng-cloak>
@@ -288,15 +293,16 @@ var app = angular.module('myApp', ['ngAnimate']);
       <md-tab label="Employee Docs">
         <md-content class="md-padding">
           <h5 class="md-display-1">Upload the documents if any</h5><br><br>
-          <div ng-controller = "myCtrl">
          <input type = "file" file-model = "myFile"/><br><br><br>
          <button ng-click = "uploadFile()">upload me</button>
-      </div>
         
         </md-content>
       </md-tab>      
     </md-tabs>
   </md-content>
 </div>
-</div>
+      </md-input-container>
+
+    </form>
+  </md-content>
 </div>

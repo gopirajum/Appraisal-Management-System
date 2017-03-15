@@ -12,7 +12,8 @@ angular.module('appraisalManagement').service('users', ['$http', '$stateParams',
   var login = function(credentials){
     //console.log("credentials in service:"+credentials.email+" "+credentials.password);
     return $http.post('/auth',credentials).success(function(response) {
-        $rootScope.current_user = response.email;
+        $rootScope.current_user = credentials.email;
+        console.log("calling toastr");
         toastr.success('Login successful');
     }).error(function(response) {
       console.log("in service.js else part");
