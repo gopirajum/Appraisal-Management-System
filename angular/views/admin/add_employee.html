@@ -62,11 +62,11 @@
         <md-input-container flex="50">
           <label>Designation</label>
           <md-select name="design" ng-model="project.designation">
-            <md-option value="softwareengg">Software Engineer</md-option>
-            <md-option value="srsoftwareengg">Senior Software Engineer</md-option>
-            <md-option value="manager">Manager</md-option>
-            <md-option value="hr">HR</md-option>
-            <md-option value="intern">Intern</md-option>
+            <md-option value="Senior Software Engineer">Senior Software Engineer</md-option>
+            <md-option value="Software Engineer">Software Engineer</md-option>
+            <md-option value="Manager">Manager</md-option>
+            <md-option value="HR">HR</md-option>
+            <md-option value="Intern">Intern</md-option>
           </md-select>
           </md-input-container>
       </div>
@@ -87,7 +87,7 @@
 
       <div layout="row" layout-align="end">
       <div flex="30">
-      <md-button align="center" class="md-raised md-primary login">Submit</md-button>
+      <md-button align="center" class="md-raised md-primary login" ng-click="add_employee(project)">Submit</md-button>
       </div>
       </div>
 

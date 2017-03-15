@@ -23,7 +23,7 @@ routerApp.config(function($stateProvider, $urlRouterProvider) {
     templateUrl: '/angular/views/auth/login.html'
   })
   .state('reset_password', {
-    url: '/reset_password',
+    url: '/reset_password/:access_token',
     templateUrl: '/angular/views/auth/reset_password.html'     
   })
   .state('home', {

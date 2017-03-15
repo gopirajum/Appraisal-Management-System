@@ -12,10 +12,10 @@ angular.module('appraisalManagement').service('users', ['$http', '$stateParams',
   var login = function(credentials){
     //console.log("credentials in service:"+credentials.email+" "+credentials.password);
     return $http.post('/auth',credentials).success(function(response) {
-        $rootScope.current_user = response.email;
+        $rootScope.current_user = credentials.email;
         toastr.success('Login successful');
     }).error(function(response) {
-      console.log("in service.js else part");
+      //console.log("in service.js else part");
       toastr.error('Invalid credentials');
     });
   }
@@ -41,6 +41,17 @@ angular.module('appraisalManagement').service('users', ['$http', '$stateParams',
     });
   }
 
+  var reset_password = function(credentials){
+    
+    credentials.access_token=$stateParams.access_token;
+    return $http.post('/reset_password',credentials).success(function(response) {
+        toastr.success('Password Reset Successful');
+    }).error(function(response) {
+      //console.log("in service.js else part");
+      toastr.error('Failed to update password');
+    });
+  }
+
   // public methods
   return {
     list: {
@@ -52,6 +63,7 @@ angular.module('appraisalManagement').service('users', ['$http', '$stateParams',
     login: login,
     add_employee: add_employee,
     update_employee: update_employee,
+    reset_password: reset_password,
     model: {
       get: get_default
     }

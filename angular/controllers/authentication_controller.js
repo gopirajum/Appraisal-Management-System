@@ -24,7 +24,7 @@ appraisalManagement_controllers.controller('AuthCtrl',['$scope', '$rootScope', '
 
     users.add_employee(details).then(function(response){
       
-         $state.go('home.profile');
+         //$state.go('home.profile');
       
     });
   }
@@ -39,6 +39,18 @@ appraisalManagement_controllers.controller('AuthCtrl',['$scope', '$rootScope', '
         }
       
          $state.go('home.profile');
+      
+    });
+  }
+
+  //reset_password
+  $scope.reset_password = function(credentials) {
+    //console.log("in controller reset");
+
+    users.reset_password(credentials).then(function(response){
+        
+
+    $state.go('root');
       
     });
   }

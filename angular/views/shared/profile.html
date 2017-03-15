@@ -86,7 +86,7 @@
 
       <div layout="row" layout-align="end">
       <div flex="30">
-      <md-button align="center" class="md-raised md-primary login">Submit</md-button>
+      <md-button align="center" class="md-raised md-primary login" ng-click="update_employee(project)">Submit</md-button>
       </div>
       </div>
 
@@ -288,10 +288,8 @@ var app = angular.module('myApp', ['ngAnimate']);
       <md-tab label="Employee Docs">
         <md-content class="md-padding">
           <h5 class="md-display-1">Upload the documents if any</h5><br><br>
-          <div ng-controller = "myCtrl">
          <input type = "file" file-model = "myFile"/><br><br><br>
          <button ng-click = "uploadFile()">upload me</button>
-      </div>
         
         </md-content>
       </md-tab>      
