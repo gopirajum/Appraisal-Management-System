@@ -1,5 +1,5 @@
 // app.js
-var routerApp = angular.module('appriasalManagement', [
+var routerApp = angular.module('appraisalManagement', [
   'ngAnimate',
   'ui.router',
   'ngCookies',
@@ -10,7 +10,7 @@ var routerApp = angular.module('appriasalManagement', [
   'ngMessages',
   'ui.bootstrap',
   'LocalStorageModule',
-  'toaster',
+  'toastr',
   'ngFileUpload',
   'angularLoad',
   'ngMdIcons'
@@ -40,10 +40,12 @@ routerApp.config(function($stateProvider, $urlRouterProvider) {
   })
   .state('home.add_employee', {
     url: '/add_employee',
+     //controller:'addEmployeeCtrl',
     views: {
       'container': {
         templateUrl: '/angular/views/admin/add_employee.html'
       }
+
     }
   });
 });
