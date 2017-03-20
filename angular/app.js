@@ -30,6 +30,14 @@ routerApp.config(function($stateProvider, $urlRouterProvider) {
     url: '/home',
     templateUrl: '/angular/views/shared/home.html'
   })
+    .state('home.peer_form', {
+    url: '/peer_form',
+    views: {
+      'container': {
+        templateUrl: '/angular/views/reviews/peer_form.html',
+      }
+    }
+  })
   .state('home.profile', {
     url: '/profile',
     views: {
