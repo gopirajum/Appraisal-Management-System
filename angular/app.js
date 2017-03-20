@@ -47,5 +47,13 @@ routerApp.config(function($stateProvider, $urlRouterProvider) {
       }
 
     }
-  });
+  })
+  .state('home.peer_form', {
+   url: '/peer_form',
+   views: {
+     'container': {
+       templateUrl: '/angular/views/reviews/peer_form.html',
+     }
+   }
+ });
 });

@@ -168,6 +168,28 @@ var authentication_node_service = function(){
     });
   };
 
+  this.peer_form_load = function(callback){
+  
+     //Connect to the db
+    MongoClient.connect("mongodb://localhost/test", function(err, db) {
+      if(err) { callback(err); }
+
+       var collection = db.collection('questions');
+       collection.find().toArray(function(err, items) {
+        if(items){
+              db.close();//closing db connection
+              callback("ok",items);
+            }
+            else{
+              db.close();//closing db connection
+              callback("ok",null);
+            }
+
+       });
+       
+    });
+  };
+
 
 };
 

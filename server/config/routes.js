@@ -70,10 +70,22 @@ router.post('/reset_password', function(req, res) {
     else{
       res.status(400).send({
       message: 'This is an error!'
-    });
-  }
+      });
+    }
+  });
 });
-  
+
+router.post('/peer_form_load', function(req, res) {
+
+  authentication_node_serviceInstance.peer_form_load(function(status,details)
+  {
+    if(status=="ok"){res.json(details);}
+    else{
+      res.status(400).send({
+      message: 'This is an error!'
+      });
+    }
+  });
 });
 
 // Define the about route

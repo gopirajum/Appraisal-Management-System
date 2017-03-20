@@ -54,5 +54,21 @@ appraisalManagement_controllers.controller('AuthCtrl',['$scope', '$rootScope', '
       
     });
   }
+
+  //review_form
+  var init = function () {
+    users.peer_form_load().then(function(response){
+      var details=response.data;
+        
+        if(details){
+          //details.date=new Date(details.date);
+          //console.log(details);
+          $scope.questions=details;
+        }
+
+    })
+  };
+  // and fire it after definition
+  init();
   
 }]);

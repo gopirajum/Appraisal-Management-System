@@ -52,6 +52,15 @@ angular.module('appraisalManagement').service('users', ['$http', '$stateParams',
     });
   }
 
+  var peer_form_load = function(){
+    return $http.post('/peer_form_load').success(function(response) {
+
+    }).error(function(response) {
+      //console.log("in service.js else part");
+      toastr.error('Failed to Load page');
+    });
+  }
+
   // public methods
   return {
     list: {
@@ -64,6 +73,7 @@ angular.module('appraisalManagement').service('users', ['$http', '$stateParams',
     add_employee: add_employee,
     update_employee: update_employee,
     reset_password: reset_password,
+    peer_form_load: peer_form_load,
     model: {
       get: get_default
     }
