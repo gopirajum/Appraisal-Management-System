@@ -23,20 +23,12 @@ routerApp.config(function($stateProvider, $urlRouterProvider) {
     templateUrl: '/angular/views/auth/login.html'
   })
   .state('reset_password', {
-    url: '/reset_password',
+    url: '/reset_password/:access_token',
     templateUrl: '/angular/views/auth/reset_password.html'     
   })
   .state('home', {
     url: '/home',
     templateUrl: '/angular/views/shared/home.html'
-  })
-    .state('home.peer_form', {
-    url: '/peer_form',
-    views: {
-      'container': {
-        templateUrl: '/angular/views/reviews/peer_form.html',
-      }
-    }
   })
   .state('home.profile', {
     url: '/profile',
@@ -55,5 +47,23 @@ routerApp.config(function($stateProvider, $urlRouterProvider) {
       }
 
     }
-  });
+  })
+    .state('home.appraisal', {
+    url: '/appraisal',
+     //controller:'addEmployeeCtrl',
+    views: {
+      'container': {
+        templateUrl: '/angular/views/admin/appraisal.html'
+      }
+
+    }
+  })
+  .state('home.peer_form', {
+   url: '/peer_form',
+   views: {
+     'container': {
+       templateUrl: '/angular/views/reviews/peer_form.html',
+     }
+   }
+ });
 });

@@ -1,0 +1,39 @@
+
+<div class="col-md-offset-2 col-md-8 col-sm-offset-3 col-sm-6 col-xs-offset-2 col-xs-8" ng-init="peer_form_init()">
+<h1 align="start">Feedback{{}}</h1>
+
+      <div layout="column" ng-cloak>
+        <md-content class="md-padding">
+          <form>
+      <div ng-repeat="x in questions"><h2>{{x.question_num+". "}} {{x.question}}</h2>
+         <md-radio-group>
+
+      <md-radio-button value="Exceptional"><h5> Exceptional </h5></md-radio-button>
+      <md-radio-button value="More Than Satisfactory"> <h5>More Than Satisfactory </h5></md-radio-button>
+      <md-radio-button value="Satisfactory"><h5> Satisfactory </h5></md-radio-button>
+      <md-radio-button value="Needs Improvement"><h5> Needs Improvement </h5></md-radio-button>
+
+    </md-radio-group>
+    </div>
+
+
+      </div>
+
+
+       <md-input-container class="md-block">
+
+          <div layout="row" layout-align="end">
+            <div flex="30">
+             <md-button align="center" class="md-raised md-primary login">Send</md-button>
+            </div>
+           </div>
+
+      </md-input-container>
+      </div>
+
+    </form>
+  </md-content>
+</div>
+</div>
+</div>
+</div>
