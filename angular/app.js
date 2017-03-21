@@ -48,12 +48,40 @@ routerApp.config(function($stateProvider, $urlRouterProvider) {
 
     }
   })
+  .state('home.appraisal_init', {
+    url: '/appraisal_init',
+     //controller:'addEmployeeCtrl',
+    views: {
+      'container': {
+        templateUrl: '/angular/views/admin/appraisal_init.html'
+      }
+
+    }
+  })
   .state('home.peer_form', {
-   url: '/peer_form',
+   url: '/peer_form/:access_token',
    views: {
      'container': {
        templateUrl: '/angular/views/reviews/peer_form.html',
      }
    }
- });
+  })
+  .state('home.appraisal', {
+   url: '/appraisal',
+    //controller:'addEmployeeCtrl',
+   views: {
+     'container': {
+       templateUrl: '/angular/views/admin/appraisal.html'
+     }
+
+   }
+  })
+  .state('home.self_form', {
+   url: '/self_form/:access_token',
+   views: {
+     'container': {
+       templateUrl: '/angular/views/reviews/self_form.html',
+     }
+   }
+  });
 });

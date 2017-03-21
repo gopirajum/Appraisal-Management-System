@@ -88,6 +88,36 @@ router.post('/peer_form_load', function(req, res) {
   });
 });
 
+router.post('/appraisal_init', function(req, res) {
+
+  authentication_node_serviceInstance.appraisal_init(req.body,function(status)
+  {
+    if(status=="ok"){res.send("success");}
+    else{
+      res.status(400).send({
+      message: 'This is an error!'
+      });
+    }
+  });
+});
+
+router.post('/GetEmployees', function(req, res) {
+
+  authentication_node_serviceInstance.getEmployees(function(status,employees)
+  {
+    if(status=="ok"){
+      res.json(employees);
+    }
+    else{
+      res.status(400).send({
+      message: 'This is an error!'
+    });
+  }
+});
+  
+});
+
+
 // Define the about route
 router.get('/about', function(req, res) {
   res.send('About us');

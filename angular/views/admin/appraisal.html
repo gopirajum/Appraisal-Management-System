@@ -1,0 +1,39 @@
+<div class="md-padding" ng-cloak style="min-height:270px" ng-controller="DemoCtrl">
+  <div layout="column" layout-wrap>
+
+    <div flex="100" flex-gt-sm="50" layout="column">
+      <div>
+        <fieldset class="standard" >
+          <h2>List of Employees</h2>
+          <div layout="row" layout-wrap flex>
+            <div flex="50" ng-repeat="employee in employees_list">
+              <md-checkbox ng-checked="exists(employee, selected)" ng-click="toggle(employee, selected)">
+                <h4>{{ employee.name }}</h4>
+              </md-checkbox>
+            </div>
+          </div>
+        </fieldset>
+      </div>
+    </div>
+
+    <div flex="100">
+      <h2 class="md-title">Selected Employees</h2>
+      <code style="display: block; padding: 8px;">
+        <h4 ng-repeat="item in selected">{{item.name}}</h4>
+      </code>
+    </div>
+
+
+          <div layout="row" layout-align="end">
+            <div flex="30">
+             <md-button align="center" class="md-raised md-primary login" ng-click="appraisal_init(selected)">Send</md-button>
+            </div>
+           </div>
+
+  </div>
+
+ <!-- <div ng-repeat="employee in employees_list">
+    <div><input type="checkbox">{{employee}}</div>
+  </div<-->
+</div>
+</div>

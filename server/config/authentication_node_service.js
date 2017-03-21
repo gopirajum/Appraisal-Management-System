@@ -190,6 +190,110 @@ var authentication_node_service = function(){
     });
   };
 
+  this.appraisal_init= function(employees,callback){
+    var transporter = nodemailer.createTransport({
+              service: 'Gmail',
+              auth: {
+                      user: 'last7439@gmail.com', // Your email id
+                      pass: 'navtechadmin' // Your password
+                    }
+            });
+
+    MongoClient.connect("mongodb://localhost/test", function(err, db) {
+    if(err) { callback(err); }
+    var collection = db.collection('reviews');
+      for(i in employees)
+      {
+        var urls=[];
+        var names=[];
+        var url,self_url;
+        var access_token = Math.random().toString(16).substring(2,12);
+          var doc={
+            "token":access_token,
+             "submitted_by":employees[i]._id,
+             "submitted_to":""
+          }
+          self_url="http://localhost:8000/#/home/self_form/"+access_token;
+          //urls.push(url);
+          collection.insert(doc, {w:1}, function(err, result) {
+            if(err){db.close();callback(err);}
+          });
+
+          for(j in employees){
+            if(employees[i]._id!=employees[j]._id)
+            {
+              var access_token = Math.random().toString(16).substring(2,12);
+              var doc={
+              "token":access_token,
+              "submitted_by":employees[i]._id,
+              "submitted_to":employees[j]._id
+              }
+              url="http://localhost:8000/#/home/peer_form/"+access_token;
+              urls.push(url);
+              names.push(employees[j].name);
+              collection.insert(doc, {w:1}, function(err, result) {
+                if(err){db.close();callback(err);}
+              });
+
+            }
+          }
+
+                      //sending mail
+            
+
+            var text = "self assesment link is "+self_url+"\n";
+            for(k in urls)
+            {
+              text=text+"peer review link of "+names[k]+" is "+urls[k]+"\n";
+            }
+            var mailOptions = {
+              from: 'last7439@gmail.com', // sender address
+              to: employees[i].email, // list of receivers
+              subject: 'Appraisal', // Subject line
+              text: text //, // plaintext body
+              //html: text // You can choose to send an HTML body instead
+            };
+
+            transporter.sendMail(mailOptions, function(error, info){
+              if(error){
+                console.log(error);
+                res.json({yo: 'error'});
+              }
+              else{
+                console.log('Message sent: ' + info.response);
+                res.json({yo: info.response});
+              }
+            });
+
+      
+      }
+      db.close();
+      callback("ok");
+    });
+  };
+
+  this.getEmployees=function(callback){
+   MongoClient.connect("mongodb://localhost/test", function(err, db) {
+      if(err) { callback(err); }
+
+       var collection = db.collection('personal_info');
+       collection.find().toArray(function(err, items) {
+        if(items){
+              db.close();//closing db connection
+              callback("ok",items);
+            }
+            else{
+              db.close();//closing db connection
+              callback("ok",null);
+            }
+
+       });
+       
+    });
+  };
+
+  
+
 
 };
 

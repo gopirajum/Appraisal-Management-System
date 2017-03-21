@@ -61,6 +61,26 @@ angular.module('appraisalManagement').service('users', ['$http', '$stateParams',
     });
   }
 
+  //after adding employees sending mails
+  var appraisal_init = function(employees){
+    return $http.post('/appraisal_init',employees).success(function(response) {
+        //$rootScope.current_user = details.email;
+         toastr.success('Successfully sent');
+    }).error(function(response) {
+      toastr.error('Unable to send');
+    });
+
+  }
+  
+  var get_employees = function(){
+   return $http.post('/GetEmployees').success(function(response) {
+    // employees = response;
+   }).error(function(response) {
+     toastr.error('Unable to fetch');
+   });
+  }
+
+
   // public methods
   return {
     list: {
@@ -74,6 +94,8 @@ angular.module('appraisalManagement').service('users', ['$http', '$stateParams',
     update_employee: update_employee,
     reset_password: reset_password,
     peer_form_load: peer_form_load,
+    appraisal_init: appraisal_init,
+    get_employees:get_employees,
     model: {
       get: get_default
     }
