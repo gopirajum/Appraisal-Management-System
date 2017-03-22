@@ -59,7 +59,7 @@ routerApp.config(function($stateProvider, $urlRouterProvider) {
     }
   })
   .state('home.peer_form', {
-   url: '/peer_form/:access_token',
+   url: '/peer_form/:review_token',
    views: {
      'container': {
        templateUrl: '/angular/views/reviews/peer_form.html',
@@ -77,7 +77,7 @@ routerApp.config(function($stateProvider, $urlRouterProvider) {
    }
   })
   .state('home.self_form', {
-   url: '/self_form/:access_token',
+   url: '/self_form/:self_token',
    views: {
      'container': {
        templateUrl: '/angular/views/reviews/self_form.html',

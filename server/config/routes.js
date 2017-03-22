@@ -117,6 +117,19 @@ router.post('/GetEmployees', function(req, res) {
   
 });
 
+router.post('/PutPeerForm', function(req, res) {
+
+  authentication_node_serviceInstance.putPeerForm(req.body,function(status)
+  {
+    if(status=="ok"){res.send('success');}
+    else{
+      res.status(400).send({
+      message: 'This is an error!'
+      });
+    }
+  });
+});
+
 
 // Define the about route
 router.get('/about', function(req, res) {

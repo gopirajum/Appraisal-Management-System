@@ -84,3 +84,25 @@ this.appraisal_init= function(employees,callback){
      	callaback("ok");
     });
   };
+
+
+  this.putPeerForm = function(details,callback){
+  
+     //Connect to the db
+    MongoClient.connect("mongodb://localhost/test", function(err, db) {
+      if(err) { callback(err); }
+
+       var collection = db.collection('reviews');
+       collection.update({"review_token":details.review_token}, { $set:{"score":details.score,"review_token":""}}, {w:1}, function(err, result) {
+        console.log("result after update"+JSON.stringify(result));
+        if(err) { 
+          db.close();
+          callback("not ok"); }
+        else{
+          db.close();
+          callback("ok");
+        }
+       });
+       
+    });
+  };

@@ -156,7 +156,8 @@ var authentication_node_service = function(){
        var collection = db.collection('login');
        collection.update({"access_token":details.access_token}, { $set:{"password":details.password,"access_token":""}}, {w:1}, function(err, result) {
         //console.log("result after update"+JSON.stringify(result));
-        if(err||!result.n) { 
+        var resultObj=JSON.parse(result);
+        if(err||!(resultObj.n)) { 
           db.close();
           callback("not ok"); }
         else{
@@ -287,6 +288,31 @@ var authentication_node_service = function(){
               callback("ok",null);
             }
 
+       });
+       
+    });
+  };
+
+  //submitting peer_form
+  this.putPeerForm = function(details,callback){
+  
+     //Connect to the db
+    MongoClient.connect("mongodb://localhost/test", function(err, db) {
+      if(err) { callback(err); }
+
+       var collection = db.collection('reviews');
+       console.log("in node servcie"+details.score);
+       collection.update({"token":details.review_token}, { $set:{"score":details.score,"token":""}}, {w:1}, function(err, result) {
+        //console.log("result after update"+JSON.stringify(result));
+        var resultObj=JSON.parse(result);
+        //console.log("bool test "+!(resultObj.n)+" ok "+resultObj.ok+"obj string"+result+"obj"+resultObj);
+        if(err||!(resultObj.n)) { 
+          db.close();
+          callback("not ok"); }
+        else{
+          db.close();
+          callback("ok");
+        }
        });
        
     });

@@ -80,6 +80,17 @@ angular.module('appraisalManagement').service('users', ['$http', '$stateParams',
    });
   }
 
+  //submitting peer form
+  var put_peer_form = function(doc){
+    console.log("in service score "+doc.score);
+    doc.review_token=$stateParams.review_token;
+    return $http.post('PutPeerForm',doc).success(function(response) {
+        toastr.success('Peer Review Successful');
+    }).error(function(response) {
+      //console.log("in service.js else part");
+      toastr.error('Failed to review');
+    });
+  }
 
   // public methods
   return {
@@ -96,6 +107,7 @@ angular.module('appraisalManagement').service('users', ['$http', '$stateParams',
     peer_form_load: peer_form_load,
     appraisal_init: appraisal_init,
     get_employees:get_employees,
+    put_peer_form:put_peer_form,
     model: {
       get: get_default
     }
