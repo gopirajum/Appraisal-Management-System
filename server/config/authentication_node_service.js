@@ -318,9 +318,6 @@ var authentication_node_service = function(){
     });
   };
 
-  
-
-
 };
 
 module.exports = authentication_node_service;

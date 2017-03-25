@@ -41,6 +41,15 @@ angular.module('appraisalManagement').service('users', ['$http', '$stateParams',
     });
   }
 
+  /*var get_employees = function(employees){
+    return $http.post('/GetEmployees').success(function(response) {
+      employees = response;
+    }).error(function(response) {
+      toastr.error('Unable to update');
+    });
+  }*/
+
+
   var reset_password = function(credentials){
     
     credentials.access_token=$stateParams.access_token;
