@@ -5,8 +5,8 @@ router.use(bodyParser.json()); // for parsing application/json
 router.use(bodyParser.urlencoded({ extended: true })); // for parsing       application/x-www-form-urlencoded
 
 //authentication_node_service module
-var authentication_node_service =require('./authentication_node_service.js');
-var authentication_node_serviceInstance= new authentication_node_service(); 
+var authentication = new require('../controllers/authentication.js');
+var authentication = new authentication(); 
 
 //Middle ware that is specific to this router
 router.use(function timeLog(req, res, next) {
@@ -14,141 +14,113 @@ router.use(function timeLog(req, res, next) {
   next();
 });
 
-
-// Define the home page route
 router.post('/auth', function(req, res) {
-  //console.log("req  email:"+req.body.email+" password: "+req.body.password);
-  authentication_node_serviceInstance.authenticate(req.body,function(status,details)
-  {
+  authentication.authenticate(req.body,function(status,details){
   	if(status=="ok"){
   		res.json(details);
-  	}
-  	else{
+  	} else {
   		res.status(400).send({
-   		message: 'This is an error!'
-		});
-  }
-});
-  
+        message: 'This is an error!'
+		  });
+    }
+  });  
 });
 
 
 router.post('/addEmployee', function(req, res) {
-
-  authentication_node_serviceInstance.add_employee(req.body,function(status)
-  {
-  	if(status=="ok"){res.send('success');}
-  	else{
-  		console.log("in routes.js else part");
+  authentication.add_employee(req.body,function(status){
+  	if(status=="ok"){
+      res.send('success');
+    } else {
   		res.status(400).send({
-   		message: 'This is an error!'
-		});
-  }
-});
-  
+     		message: 'This is an error!'
+  		});
+    }
+  }); 
 });
 
 router.post('/updateEmployee', function(req, res) {
-
-  authentication_node_serviceInstance.update_employee(req.body,function(status)
-  {
-  	if(status=="ok"){res.send('success');}
-  	else{
+  authentication.update_employee(req.body,function(status) {
+  	if(status=="ok"){
+      res.send('success');
+    } else {
   		res.status(400).send({
-   		message: 'This is an error!'
-		});
-  }
-});
-  
+     		message: 'This is an error!'
+  		});
+    }
+  }); 
 });
 
 router.post('/reset_password', function(req, res) {
-
-  authentication_node_serviceInstance.reset_password(req.body,function(status)
-  {
-    if(status=="ok"){res.send('success');}
-    else{
+  authentication.reset_password(req.body,function(status) {
+    if(status=="ok") {
+      res.send('success');
+    } else {
       res.status(400).send({
-      message: 'This is an error!'
+        message: 'This is an error!'
       });
     }
   });
 });
 
 router.post('/peer_form_load', function(req, res) {
-
-  authentication_node_serviceInstance.peer_form_load(function(status,details)
-  {
-    if(status=="ok"){res.json(details);}
-    else{
+  authentication.peer_form_load(function(status,details) {
+    if(status=="ok") {
+      res.json(details);
+    } else {
       res.status(400).send({
-      message: 'This is an error!'
+        message: 'This is an error!'
       });
     }
   });
 });
 
 router.post('/appraisal_init', function(req, res) {
-
-  authentication_node_serviceInstance.appraisal_init(req.body,function(status)
-  {
-    if(status=="ok"){res.send("success");}
-    else{
+  authentication.appraisal_init(req.body,function(status) {
+    if(status=="ok") {
+      res.send("success");
+    } else {
       res.status(400).send({
-      message: 'This is an error!'
+        message: 'This is an error!'
       });
     }
   });
 });
 
 router.post('/GetEmployees', function(req, res) {
-
-  authentication_node_serviceInstance.getEmployees(function(status,employees)
-  {
-    if(status=="ok"){
+  authentication.getEmployees(function(status,employees) {
+    if(status=="ok") {
       res.json(employees);
-    }
-    else{
+    } else {
       res.status(400).send({
-      message: 'This is an error!'
-    });
-  }
-});
-  
+        message: 'This is an error!'
+      });
+    }
+  }); 
 });
 
 router.post('/PutPeerForm', function(req, res) {
-
-  authentication_node_serviceInstance.putPeerForm(req.body,function(status)
-  {
-    if(status=="ok"){res.send('success');}
-    else{
+  authentication.putPeerForm(req.body,function(status) {
+    if(status=="ok") {
+      res.send('success');
+    } else {
       res.status(400).send({
-      message: 'This is an error!'
+        message: 'This is an error!'
       });
     }
   });
 });
 
 router.post('/GetEmployees', function(req, res) {
-
- authentication_node_serviceInstance.getEmployees(function(status,employees)
- {
+ authentication.getEmployees(function(status,employees) {
    if(status=="ok"){
-     res.json(employees);
-   }
-   else{
-     res.status(400).send({
-     message: 'This is an error!'
-   });
- }
+      res.json(employees);
+    } else {
+      res.status(400).send({
+        message: 'This is an error!'
+      });
+    }
+  });
 });
-});
-
-// Define the about route
-router.get('/about', function(req, res) {
-  res.send('About us');
-});
-
 
 module.exports = router;
