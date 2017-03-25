@@ -1,125 +1,109 @@
-angular.module('appraisalManagement').service('users', ['$http', '$stateParams', '$rootScope', 'toastr',
-  function($http, $stateParams, $rootScope, toastr) {
-    
-  var get_default = function() {
-    return {
-      list: [],
-      single: {},
-      statuses: []
-    };
-  }
+var appraisalManagement_controllers = angular.module('appraisalManagement');
+appraisalManagement_controllers.controller('AuthCtrl',['$scope', '$rootScope', '$state', 'users',
+  function($scope, $rootScope, $state, users) {
 
-  var login = function(credentials){
-    //console.log("credentials in service:"+credentials.email+" "+credentials.password);
-    return $http.post('/auth',credentials).success(function(response) {
-        $rootScope.current_user = credentials.email;
-        toastr.success('Login successful');
-    }).error(function(response) {
-      //console.log("in service.js else part");
-      toastr.error('Invalid credentials');
+    //login authentication
+    $scope.login = function(credentials) {
+
+    users.login(credentials).then(function(response){
+        console.log("response in contoller "+JSON.stringify(response));
+        var details=response.data;
+        
+        if(details){
+          details.date=new Date(details.date);
+          $scope.project=details;
+        }
+
+    $state.go('home.profile');
+      
     });
   }
 
+  //adding new employee by admin
+  $scope.add_employee = function(details) {
 
-  var add_employee = function(details){
-
-    return $http.post('/addEmployee',details).success(function(response) {
-        $rootScope.current_user = response.email;
-         toastr.success('Successfully added');
-    }).error(function(response) {
-      toastr.error('Unable to add');
+    users.add_employee(details).then(function(response){
+      
+         //$state.go('home.profile');
+      
     });
   }
 
-  var update_employee = function(details){
+  //updating the personal information
+  $scope.update_employee = function(details) {
 
-    return $http.post('/updateEmployee',details).success(function(response) {
-        $rootScope.current_user = details.email;
-         toastr.success('Successfully updated');
-    }).error(function(response) {
-      toastr.error('Unable to update');
+    users.update_employee(details).then(function(response){
+      if(details){
+          details.date=new Date(details.date);
+          $scope.project=details;
+        }
+      
+         $state.go('home.profile');
+      
     });
   }
 
-  /*var get_employees = function(employees){
-    return $http.post('/GetEmployees').success(function(response) {
-      employees = response;
-    }).error(function(response) {
-      toastr.error('Unable to update');
-    });
-  }*/
+  //reset_password
+  $scope.reset_password = function(credentials) {
+    //console.log("in controller reset");
 
+    users.reset_password(credentials).then(function(response){
+        
 
-  var reset_password = function(credentials){
-    
-    credentials.access_token=$stateParams.access_token;
-    return $http.post('/reset_password',credentials).success(function(response) {
-        toastr.success('Password Reset Successful');
-    }).error(function(response) {
-      //console.log("in service.js else part");
-      toastr.error('Failed to update password');
+    $state.go('root');
+      
     });
   }
 
-  var peer_form_load = function(){
-    return $http.post('/peer_form_load').success(function(response) {
+  //review_form
+  $scope.peer_form_init = function () {
+    users.peer_form_load().then(function(response){
+      var details=response.data;
+        
+        if(details){
+          //details.date=new Date(details.date);
+          $scope.questions=details;
+        }
 
-    }).error(function(response) {
-      //console.log("in service.js else part");
-      toastr.error('Failed to Load page');
     });
   }
+  // and fire it after definition
+  //init();
 
-  //after adding employees sending mails
-  var appraisal_init = function(employees){
-    return $http.post('/appraisal_init',employees).success(function(response) {
-        //$rootScope.current_user = details.email;
-         toastr.success('Successfully sent');
-    }).error(function(response) {
-      toastr.error('Unable to send');
+  $scope.appraisal_init = function(employees)
+  {
+    /*var employees=[{ "_id" : "58c98c4166a5600c86787967", "name" : "Akkineni Susmitha", "code" : "234", "date" : "1995-12-26T18:30:00.000Z", "father_name" : "Akkineni Nagaraju", "gender" : "female", "email" : "susmitha.akkineni999@gmail.com", "designation" : "Intern", "phone_number" : 9652585378, "key" : "58c98c4166a5600c86787966"},
+                   { "_id" : "58cfa9b3e7493e2f258008dc", "name" : "Samhitha Venkatesh", "code" : "123", "date" : "1996-07-27T18:30:00.000Z", "father_name" : "Venkatesh", "gender" : "female", "email" : "samhitha2896@gmail.com", "designation" : "Intern", "phone_number" : 8985538903, "key" : "58cfa9b3e7493e2f258008db" }
+                  ];*/
+    users.appraisal_init(employees).then(function(response){
+      //on success
     });
-
-  }
-  
-  var get_employees = function(){
-   return $http.post('/GetEmployees').success(function(response) {
-    // employees = response;
-   }).error(function(response) {
-     toastr.error('Unable to fetch');
-   });
   }
 
   //submitting peer form
-  var put_peer_form = function(doc){
-    console.log("in service score "+doc.score);
-    doc.review_token=$stateParams.review_token;
-    return $http.post('PutPeerForm',doc).success(function(response) {
-        toastr.success('Peer Review Successful');
-    }).error(function(response) {
-      //console.log("in service.js else part");
-      toastr.error('Failed to review');
+  $scope.peer_form_submit = function(questions){
+    var score=0;
+    for(i in questions){
+    //console.log("in controller "+questions[i].answer);
+    score=score+parseFloat(questions[i].answer);
+    }
+    var doc={
+      "score":""+score+"",
+      "review_token":""
+    }
+    users.put_peer_form(doc).then(function(response){
+      //on success
     });
   }
 
-  // public methods
-  return {
-    list: {
-      
-    },
-    single:{
-      
-    },
-    login: login,
-    add_employee: add_employee,
-    update_employee: update_employee,
-    reset_password: reset_password,
-    peer_form_load: peer_form_load,
-    appraisal_init: appraisal_init,
-    get_employees:get_employees,
-    put_peer_form:put_peer_form,
-    model: {
-      get: get_default
-    }
-  }
+  $scope.init = function () {
+   $scope.employees_list = [];
+   users.get_employees().then(function(response){
+     $scope.employees_list=response.data;
+   });
+   console.log("controller "+$scope.employees_list);
+  };
+// and fire it after definition
+$scope.init();
   
 }]);
