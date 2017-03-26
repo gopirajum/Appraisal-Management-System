@@ -40,12 +40,11 @@ routerApp.config(function($stateProvider, $urlRouterProvider) {
   })
   .state('home.add_employee', {
     url: '/add_employee',
-     //controller:'addEmployeeCtrl',
+    // controller:'EmployeesCtrl',
     views: {
       'container': {
         templateUrl: '/angular/views/admin/add_employee.html'
       }
-
     }
   })
   .state('home.appraisal_init', {

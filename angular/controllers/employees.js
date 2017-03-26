@@ -1,16 +1,30 @@
 var appraisalManagement_controllers = angular.module('appraisalManagement');
-appraisalManagement_controllers.controller('EmployeesCtrl',['$scope', '$rootScope', '$state', 'users',
-  function($scope, $rootScope, $state, users) {
+appraisalManagement_controllers.controller('EmployeesCtrl',['$scope', '$rootScope', '$state', 'employees', 'session',
+  function($scope, $rootScope, $state, employees, session) {
+
+  $scope.init = function() {
+    session.get_user().then(function(current_user) {
+      if(current_user != null) {
+        console.log(current_user)
+        $scope.employees_list = [];
+        employees.get_employees().then(function(response){
+          $scope.employees_list=response.data;
+        });
+      } else {
+        $state.go('root')
+      }
+    })
+  }
 
   //adding new employee by admin
   $scope.add_employee = function(details) {
-    users.add_employee(details).then(function(response){
+    employees.add_employee(details).then(function(response){
     });
   }
 
   //updating the personal information
   $scope.update_employee = function(details) {
-    users.update_employee(details).then(function(response){
+    employees.update_employee(details).then(function(response){
     if(details) {
       details.date = new Date(details.date);
       $scope.project=details;
@@ -21,7 +35,7 @@ appraisalManagement_controllers.controller('EmployeesCtrl',['$scope', '$rootScop
 
   //review_form
   $scope.peer_form_init = function () {
-    users.peer_form_load().then(function(response){
+    employees.peer_form_load().then(function(response){
       var details=response.data;
       if(details){
         $scope.questions=details;
@@ -30,7 +44,7 @@ appraisalManagement_controllers.controller('EmployeesCtrl',['$scope', '$rootScop
   }
 
   $scope.appraisal_init = function(employees) {
-    users.appraisal_init(employees).then(function(response){
+    employees.appraisal_init(employees).then(function(response){
     });
   }
 
@@ -44,15 +58,9 @@ appraisalManagement_controllers.controller('EmployeesCtrl',['$scope', '$rootScop
       "score":""+score+"",
       "review_token":""
     }
-    users.put_peer_form(doc).then(function(response){
+    employees.put_peer_form(doc).then(function(response){
     });
   }
 
-  $scope.init = function () {
-    $scope.employees_list = [];
-    users.get_employees().then(function(response){
-      $scope.employees_list=response.data;
-    });
-  };
   $scope.init();
 }]);
