@@ -65,12 +65,24 @@ routerApp.config(function($stateProvider, $urlRouterProvider) {
      }
    }
   })
+    .state('home.admin_page', {
+   url: '/admin_page',
+    //controller:'addEmployeeCtrl',
+   views: {
+     'container': {
+       templateUrl: '/angular/views/admin/admin_page.html',
+       controller:'EmployeesCtrl'
+     }
+
+   }
+  })
   .state('home.appraisal', {
    url: '/appraisal',
     //controller:'addEmployeeCtrl',
    views: {
      'container': {
-       templateUrl: '/angular/views/admin/appraisal.html'
+       templateUrl: '/angular/views/admin/appraisal.html',
+       controller:'EmployeesCtrl'
      }
 
    }

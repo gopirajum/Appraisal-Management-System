@@ -34,6 +34,15 @@ angular.module('appraisalManagement').service('employees', ['$http', '$statePara
     });
   }
 
+  //self form questions loading
+ var self_form_load = function(){
+   return $http.post('/self_form_load').success(function(response) {
+
+   }).error(function(response) {
+     toastr.error('Failed to Load page');
+   });
+ }
+
   //after adding employees sending mails
   var appraisal_init = function(employees){
     return $http.post('/appraisal_init',employees).success(function(response) {
@@ -70,6 +79,7 @@ angular.module('appraisalManagement').service('employees', ['$http', '$statePara
     appraisal_init: appraisal_init,
     get_employees:get_employees,
     put_peer_form:put_peer_form,
+    self_form_load:self_form_load,
     model: {
       get: get_default
     }

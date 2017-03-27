@@ -34,7 +34,7 @@ appraisalManagement_controllers.controller('EmployeesCtrl',['$scope', '$rootScop
   }
 
   //review_form
-  $scope.peer_form_init = function () {
+  $scope.peer_form_load = function () {
     employees.peer_form_load().then(function(response){
       var details=response.data;
       if(details){
@@ -42,6 +42,24 @@ appraisalManagement_controllers.controller('EmployeesCtrl',['$scope', '$rootScop
       }
     });
   }
+
+  //self review form
+ $scope.self_form_load = function () {
+   employees.self_form_load().then(function(response){
+     var details=response.data;
+     if(details){
+       $scope.questions=details;
+     }
+   });
+ }
+
+ $scope.get_selected_employee = function(index){
+  //console.log(" in controller "+$scope.employees_list[index]);
+   var emp = $scope.employees_list[index];
+   emp.date = new Date(emp.date);
+   $scope.project = emp;
+
+ }
 
   $scope.appraisal_init = function(employees) {
     employees.appraisal_init(employees).then(function(response){
