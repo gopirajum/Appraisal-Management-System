@@ -24,7 +24,8 @@ routerApp.config(function($stateProvider, $urlRouterProvider) {
   })
   .state('reset_password', {
     url: '/reset_password/:access_token',
-    templateUrl: '/angular/views/auth/reset_password.html'     
+    templateUrl: '/angular/views/auth/reset_password.html',
+    controller:'EmployeesCtrl'     
   })
   .state('home', {
     url: '/home',
@@ -34,7 +35,7 @@ routerApp.config(function($stateProvider, $urlRouterProvider) {
     url: '/profile',
     views: {
       'container': {
-        templateUrl: '/angular/views/shared/profile.html',
+        templateUrl: '/angular/views/shared/profile.html'
       }
     }
   })
@@ -47,21 +48,12 @@ routerApp.config(function($stateProvider, $urlRouterProvider) {
       }
     }
   })
-  .state('home.appraisal_init', {
-    url: '/appraisal_init',
-     //controller:'addEmployeeCtrl',
-    views: {
-      'container': {
-        templateUrl: '/angular/views/admin/appraisal_init.html'
-      }
-
-    }
-  })
   .state('home.peer_form', {
    url: '/peer_form/:review_token',
    views: {
      'container': {
        templateUrl: '/angular/views/reviews/peer_form.html',
+       controller:'AppraisalCtrl'
      }
    }
   })
@@ -70,16 +62,28 @@ routerApp.config(function($stateProvider, $urlRouterProvider) {
     //controller:'addEmployeeCtrl',
    views: {
      'container': {
-       templateUrl: '/angular/views/admin/appraisal.html'
+       templateUrl: '/angular/views/admin/appraisal.html',
+       controller:'EmployeesCtrl'
      }
 
    }
   })
+  .state('home.admin_page', {
+  url: '/admin_page',
+  views: {
+    'container': {
+      templateUrl: '/angular/views/admin/admin_page.html',
+      controller:'EmployeesCtrl'
+    }
+
+  }
+ })
   .state('home.self_form', {
    url: '/self_form/:self_token',
    views: {
      'container': {
        templateUrl: '/angular/views/reviews/self_form.html',
+       controller:'AppraisalCtrl'
      }
    }
   });

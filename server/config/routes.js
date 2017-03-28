@@ -75,6 +75,18 @@ router.post('/peer_form_load', function(req, res) {
   });
 });
 
+router.post('/self_form_load', function(req, res) {
+  authentication.self_form_load(function(status,details) {
+    if(status=="ok") {
+      res.json(details);
+    } else {
+      res.status(400).send({
+        message: 'This is an error!'
+      });
+    }
+  });
+});
+
 router.post('/appraisal_init', function(req, res) {
   authentication.appraisal_init(req.body,function(status) {
     if(status=="ok") {

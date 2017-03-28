@@ -10,7 +10,12 @@ appraisalManagement_controllers.controller('AuthCtrl',['$scope', '$rootScope', '
           $scope.project = details;
         }
         session.set_user(details);
-        $state.go('home.profile');
+        if(details.role == "hiring_manager"){
+          $state.go('home.admin_page');
+        }else if(details.role == "employee"){
+          $state.go('home.profile');
+        }
+        //$state.go('home.profile');
       });
     }
 

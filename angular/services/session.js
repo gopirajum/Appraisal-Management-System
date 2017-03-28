@@ -13,7 +13,7 @@ angular.module('appraisalManagement').factory('session', ['$http', '$stateParams
   }
 
   var logout = function() {
-    localStorageService.remove('userInfo');
+    localStorageService.remove('current_user');
   }
 
   // public methods

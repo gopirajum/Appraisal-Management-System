@@ -144,7 +144,7 @@ var authentication_node_service = function() {
         callback(err); 
       }
       var collection = db.collection('questions');
-      collection.find().toArray(function(err, items) {
+      collection.find({type:"peer"}).toArray(function(err, items) {
         if(items) {
           db.close();//closing db connection
           callback("ok",items);
@@ -155,6 +155,26 @@ var authentication_node_service = function() {
       }); 
     });
   };
+
+  this.self_form_load = function(callback){
+    mongo_client.connect("mongodb://localhost/test", function(err, db) {
+      if(err) { 
+        callback(err); 
+      }
+      var collection = db.collection('questions');
+      collection.find({type:"self"}).toArray(function(err, items) {
+        if(items) {
+          db.close();//closing db connection
+          callback("ok",items);
+        } else {
+          db.close();//closing db connection
+          callback("ok",null);
+        }
+      }); 
+    });
+  };
+
+
 
   this.appraisal_init= function(employees,callback){
     var transporter = nodemailer.createTransport({
