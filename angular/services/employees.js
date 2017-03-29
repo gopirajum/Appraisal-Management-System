@@ -26,6 +26,15 @@ angular.module('appraisalManagement').service('employees', ['$http', '$statePara
     });
   }
 
+  var update_official_details = function(details){
+    return $http.post('/updateOfficialDetails',details).success(function(response) {
+      //$rootScope.current_user = details.email;
+      toastr.success('Successfully updated');
+    }).error(function(response) {
+      toastr.error('Unable to update');
+    });
+  }
+
   var peer_form_load = function(){
     return $http.post('/peer_form_load').success(function(response) {
 
@@ -71,15 +80,27 @@ angular.module('appraisalManagement').service('employees', ['$http', '$statePara
     });
   }
 
+  //submitting self form
+  var put_self_form = function(doc){
+    doc.review_token=$stateParams.review_token;
+    return $http.post('PutSelfForm',doc).success(function(response) {
+      toastr.success('Self Review Successful');
+    }).error(function(response) {
+      toastr.error('Failed to review');
+    });
+  }
+
   // public methods
   return {
     add_employee: add_employee,
     update_employee: update_employee,
+    update_official_details: update_official_details,
     peer_form_load: peer_form_load,
     self_form_load: self_form_load,
     appraisal_init: appraisal_init,
     get_employees:get_employees,
     put_peer_form:put_peer_form,
+    put_self_form:put_self_form,
     model: {
       get: get_default
     }

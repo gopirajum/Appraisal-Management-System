@@ -4,6 +4,11 @@ var nodemailer = require('nodemailer');
 var authentication_node_service = function() {
 
   this.authenticate = function(credentials,callback){
+    var employee={
+      "key":null,
+      "personal_details":null,
+      "official_details":null
+    };
     mongo_client.connect("mongodb://localhost/test", function(err, db) {
       if(err) { 
         callback(err,null); 
@@ -13,16 +18,31 @@ var authentication_node_service = function() {
       var findPassword=credentials.password;
       collection.findOne({email:findEmail}, function(err, item) {
         if(item&&item.password==findPassword){
+          employee.key=item._id;
           var personal_info_collection = db.collection('personal_info');
-          personal_info_collection.findOne({email:findEmail}, function(err, item) {
-            if(item){
-              db.close();
-              callback("ok",item);
+          personal_info_collection.findOne({key:item._id}, function(err, personalItem) {
+            if(personalItem){
+              employee.personal_details=personalItem;
+              
             } else {
               db.close();
-              callback("ok",null);
+              callback("not ok",null);
             }
           }); 
+          var official_details_collection = db.collection('official_details');
+          official_details_collection.findOne({key:item._id}, function(err, officialItem) {
+
+            if(officialItem){
+              employee.official_details=officialItem;
+              db.close();
+              callback("ok",employee);
+              
+            } else {
+              db.close();
+              callback("not ok",null);
+            }
+          }); 
+
         } else {
           db.close();
           callback("not ok",null);
@@ -48,6 +68,17 @@ var authentication_node_service = function() {
         if(!err) {
           var collection = db.collection('personal_info');  
           details.key=loginresult.ops[0]._id//accessing the _id of login_doc inserted
+
+          //inserting into official details
+          var offcial_collection=db.collection('official_details');
+          var doc={"key":details.key};
+          offcial_collection.insert(doc, {w:1}, function(err, result) {
+            if(err){
+              db.close();
+              callback("not ok");
+            }
+          });
+
           collection.insert(details, {w:1}, function(err, result) {
             if(!err) {
               //sending mail
@@ -58,11 +89,11 @@ var authentication_node_service = function() {
                   pass: 'navtechadmin' // Your password
                 }
               });
-              var text = 'Hello world from \n\n' + details.name +'your link is  '+'http://localhost:8000/#/reset_password/'+access_token;
+              var text = 'Hello world from \n\n' + details.name +'your link is  '+'http://localhost:9000/#/reset_password/'+access_token;
               var mailOptions = {
                 from: 'last7439@gmail.com', // sender address
                 to: details.email, // list of receivers
-                subject: 'Email Example', // Subject line
+                subject: 'Reset password', // Subject line
                 text: text //, // plaintext body
                 // html: '<b>Hello world ✔</b>' // You can choose to send an HTML body instead
               };
@@ -70,11 +101,12 @@ var authentication_node_service = function() {
               transporter.sendMail(mailOptions, function(error, info){
                 if(error){
                   console.log(error);
-                  res.json({yo: 'error'});
+                  //res.json({yo: 'error'});
+                  callback("not ok");
                 }
                 else{
                   console.log('Message sent: ' + info.response);
-                  res.json({yo: info.response});
+                  //res.json({yo: info.response});
                 }
               });
               db.close();//closing db connection
@@ -100,6 +132,33 @@ var authentication_node_service = function() {
       var collection = db.collection('personal_info');
       var keyemail=details.email;
       collection.remove({"email":keyemail}, {w:1}, function(err, result) {
+        if(!err) {
+          collection.insert(details, {w:1}, function(err, result) {
+            if(!err){
+              console.log("document inserted: "+result);
+              db.close();//closing db connection
+              callback("ok");
+            }
+            else{
+              db.close();
+              callback("not ok");
+            }
+          });
+        } else {
+          callback("not ok");
+        }
+      });
+    });
+  };
+
+  this.update_official_details = function(details,callback){
+    mongo_client.connect("mongodb://localhost/test", function(err, db) {
+      if(err) { 
+        callback(err); 
+      }
+      var collection = db.collection('official_details');
+      var key=details.key;
+      collection.remove({"key":key}, {w:1}, function(err, result) {
         if(!err) {
           collection.insert(details, {w:1}, function(err, result) {
             if(!err){
@@ -190,34 +249,35 @@ var authentication_node_service = function() {
         callback(err); 
       }
       var collection = db.collection('reviews');
+      var selfCollection = db.collection('self_reviews');
       for(i in employees) {
         var urls=[];
         var names=[];
         var url,self_url;
         var access_token = Math.random().toString(16).substring(2,12);
-        var doc={
+        var doc1={
           "token":access_token,
-          "submitted_by":employees[i]._id,
-          "submitted_to":""
+          "submitted_by":employees[i].key,
+          "questions":null
         }
 
-        self_url="http://localhost:8000/#/home/self_form/"+access_token;
-        collection.insert(doc, {w:1}, function(err, result) {
+        self_url="http://localhost:9000/#/home/self_form/"+access_token;
+        selfCollection.insert(doc1, {w:1}, function(err, result) {
           if(err){db.close();callback(err);}
         });
 
         for(j in employees) {
-          if(employees[i]._id!=employees[j]._id) {
+          if(employees[i].key!=employees[j].key) {
             var access_token = Math.random().toString(16).substring(2,12);
-            var doc = {
+            var doc2 = {
               "token":access_token,
-              "submitted_by":employees[i]._id,
-              "submitted_to":employees[j]._id
+              "submitted_by":employees[i].key,
+              "submitted_to":employees[j].key
             }
-            url="http://localhost:8000/#/home/peer_form/"+access_token;
+            url="http://localhost:9000/#/home/peer_form/"+access_token;
             urls.push(url);
-            names.push(employees[j].name);
-            collection.insert(doc, {w:1}, function(err, result) {
+            names.push(employees[j].personal_details.name);
+            collection.insert(doc2, {w:1}, function(err, result) {
               if(err){db.close();callback(err);}
             });
           }
@@ -229,7 +289,7 @@ var authentication_node_service = function() {
         }
         var mailOptions = {
           from: 'last7439@gmail.com', // sender address
-          to: employees[i].email, // list of receivers
+          to: employees[i].personal_details.email, // list of receivers
           subject: 'Appraisal', // Subject line
           text: text //, // plaintext body
           //html: text // You can choose to send an HTML body instead
@@ -251,18 +311,95 @@ var authentication_node_service = function() {
   };
 
   this.getEmployees=function(callback){
+   //console.log("in node server.js");
    mongo_client.connect("mongodb://localhost/test", function(err, db) {
       if(err) { 
         callback(err); 
       }
+      var employees_list=[];
       var collection = db.collection('personal_info');
+      var official_collection=db.collection('official_details');
+      var selfReview_collection=db.collection('self_reviews');
       collection.find().toArray(function(err, items) {
         if(items) {
-          db.close();//closing db connection
-          callback("ok",items);
+          var pushOfficialDetails = function(i,items,callbackpod){
+            if(i<items.length){
+              var empKey=items[i].key;
+              var empPersonal_info=items[i];
+
+              official_collection.findOne({key:items[i].key},function(err, item2) {
+                //console.log("official "+JSON.stringify(item2));
+                if(item2){
+                   var empOfficial_details=item2;
+                   var emp={
+                    "key":empKey,
+                    "personal_details":empPersonal_info,
+                    "official_details":empOfficial_details
+                  };
+                  //console.log("337  "+JSON.stringify(emp)+"\n");
+                  employees_list.push(emp);
+                  //console.log("\nat i "+i);
+                  pushQuestions(i,items,employees_list, function(){
+                    pushOfficialDetails(i+1,items,function(empList){
+                      //console.log("after recieving from"+(i+1));
+                      callbackpod(empList);
+                    });
+                  });
+
+                  //return employees_list;
+                }else{
+                  db.close();//closing db connection
+                  //console.log(337);
+                  callback(null);
+                }
+              });
+
+            }
+            else{
+              callbackpod(employees_list);
+            }
+          }
+
+          var pushQuestions = function(i,items,employees_list,callbackQ){
+            if(i<items.length){
+              
+              selfReview_collection.findOne({submitted_by:""+items[i].key+""},function(err, item3) {
+                //console.log("questions i"+i+"key "+items[i].key);
+                if(item3){
+                  //console.log("item3 "+item3);
+                  employees_list[i].questions=item3.questions;
+                  callbackQ();
+                }else if(err){
+                  db.close();//closing db connection
+                  callback(null);
+                }else{
+                  employees_list[i].questions=null;
+                  callbackQ();
+
+                }
+              });
+
+            }
+            else{
+              callbackQ(employees_list);
+            }
+          }
+
+          pushOfficialDetails(0,items,function(employees_list){
+            db.close();//closing db connection
+            /*console.log("354"+employees_list);
+            for(j in employees_list){
+              console.log("\n at 355 "+JSON.stringify(employees_list[j]));
+            }
+            console.log("before final callback");*/
+            callback("ok",employees_list);
+
+          });
+            
         } else {
           db.close();//closing db connection
-          callback("ok",null);
+          console.log("350");
+          callback("not ok",null);
         }
       }); 
     });
@@ -275,8 +412,29 @@ var authentication_node_service = function() {
         callback(err); 
       }
       var collection = db.collection('reviews');
-      console.log("in node servcie"+details.score);
+      //console.log("in node servcie"+details.score);
        collection.update({"token":details.review_token}, { $set:{"score":details.score,"token":""}}, {w:1}, function(err, result) {
+        var resultObj=JSON.parse(result);
+        if(err||!(resultObj.n)) { 
+          db.close();
+          callback("not ok"); 
+        } else {
+          db.close();
+          callback("ok");
+        }
+      }); 
+    });
+  };
+
+  //submitting self_form
+  this.putSelfForm = function(details,callback){
+    mongo_client.connect("mongodb://localhost/test", function(err, db) {
+      if(err) { 
+        callback(err); 
+      }
+      var collection = db.collection('self_reviews');
+      //console.log("in node servcie"+details.score);
+       collection.update({"token":details.review_token}, { $set:{"questions":details.questions,"token":""}}, {w:1}, function(err, result) {
         var resultObj=JSON.parse(result);
         if(err||!(resultObj.n)) { 
           db.close();

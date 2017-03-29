@@ -51,6 +51,18 @@ router.post('/updateEmployee', function(req, res) {
   }); 
 });
 
+router.post('/updateOfficialDetails', function(req, res) {
+  authentication.update_official_details(req.body,function(status) {
+    if(status=="ok"){
+      res.send('success');
+    } else {
+      res.status(400).send({
+        message: 'This is an error!'
+      });
+    }
+  }); 
+});
+
 router.post('/reset_password', function(req, res) {
   authentication.reset_password(req.body,function(status) {
     if(status=="ok") {
@@ -113,6 +125,18 @@ router.post('/GetEmployees', function(req, res) {
 
 router.post('/PutPeerForm', function(req, res) {
   authentication.putPeerForm(req.body,function(status) {
+    if(status=="ok") {
+      res.send('success');
+    } else {
+      res.status(400).send({
+        message: 'This is an error!'
+      });
+    }
+  });
+});
+
+router.post('/PutSelfForm', function(req, res) {
+  authentication.putSelfForm(req.body,function(status) {
     if(status=="ok") {
       res.send('success');
     } else {

@@ -10,7 +10,7 @@ angular.module('appraisalManagement').service('users', ['$http', '$stateParams',
 
   var login = function(credentials){
     return $http.post('/auth',credentials).success(function(response) {
-      $rootScope.current_user = credentials.email;
+      //$rootScope.current_user = credentials.email;
       toastr.success('Login successful');
     }).error(function(response) {
       toastr.error('Invalid credentials');

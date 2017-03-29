@@ -37,11 +37,12 @@ appraisalManagement_controllers.controller('AppraisalCtrl',['$scope', '$rootScop
 
     //submitting self form
     $scope.self_form_submit = function(questions){
-	    var score=0;
-	    for(i in questions) {
-	      //score = score+parseFloat(questions[i].answer);
-	      console.log("question "+questions[i].question+" ans "+questions[i].answer);
+	    var doc = {
+	      "questions":questions,
+	      "review_token":""
 	    }
+	    employees.put_self_form(doc).then(function(response){
+	    });
     }
 
   	$scope.init();

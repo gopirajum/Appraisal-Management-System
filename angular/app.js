@@ -33,6 +33,7 @@ routerApp.config(function($stateProvider, $urlRouterProvider) {
   })
   .state('home.profile', {
     url: '/profile',
+    // controller: "EmployeesCtrl",
     views: {
       'container': {
         templateUrl: '/angular/views/shared/profile.html'
@@ -79,7 +80,7 @@ routerApp.config(function($stateProvider, $urlRouterProvider) {
   }
  })
   .state('home.self_form', {
-   url: '/self_form/:self_token',
+   url: '/self_form/:review_token',
    views: {
      'container': {
        templateUrl: '/angular/views/reviews/self_form.html',
