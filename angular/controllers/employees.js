@@ -72,5 +72,26 @@ appraisalManagement_controllers.controller('EmployeesCtrl',['$scope', '$rootScop
 
   }
 
+  $scope.put_self_score = function(score){
+    var doc={
+      "submitted_by":$scope.key,
+      "self_score":score
+    }
+    employees.put_self_score(doc).then(function(response){
+    console.log("in controller 81 res"+JSON.stringify(response.data));
+    $scope.score=response.data;
+    $state.go('home.progress');
+    });
+  }
+
+  $scope.progress_load = function(){
+    $scope.score=employees.get_score();
+    var overall = parseFloat($scope.score.peer_score)+parseFloat($scope.score.self_score);
+    overall=overall/2;
+    $scope.score.overall_score=overall;
+  }
+
+
+
   $scope.init();
 }]);

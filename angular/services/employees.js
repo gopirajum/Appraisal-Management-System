@@ -1,5 +1,10 @@
 angular.module('appraisalManagement').service('employees', ['$http', '$stateParams', '$rootScope', 'toastr',
   function($http, $stateParams, $rootScope, toastr) {
+  var score={};
+
+  var get_score = function(){
+    return score;
+  }
     
   var get_default = function() {
     return {
@@ -90,6 +95,18 @@ angular.module('appraisalManagement').service('employees', ['$http', '$statePara
     });
   }
 
+  //submitting self score
+  var put_self_score = function(doc){
+    return $http.post('PutSelfScore',doc).success(function(response) {
+      score=response;
+      console.log("in service"+score);
+      toastr.success('Rating Successful');
+    }).error(function(response) {
+      toastr.error('Failed to rate');
+    });
+  }
+
+
   // public methods
   return {
     add_employee: add_employee,
@@ -101,6 +118,8 @@ angular.module('appraisalManagement').service('employees', ['$http', '$statePara
     get_employees:get_employees,
     put_peer_form:put_peer_form,
     put_self_form:put_self_form,
+    put_self_score:put_self_score,
+    get_score:get_score,
     model: {
       get: get_default
     }

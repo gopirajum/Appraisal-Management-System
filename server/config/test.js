@@ -9,7 +9,7 @@ var putSelfScore = function(details,callback){
       var peerCollection = db.collection('reviews');
       var peerScore=0;
       var n=0;
-      peerCollection.find("submitted_by":details.submitted_by).toArray(function(err, items) {
+      peerCollection.find({"submitted_to":details.submitted_by}).toArray(function(err, items) {
         if(items){
           for(i in items){
             peerScore=peerScore+parseInt(items[i].score);
@@ -19,25 +19,26 @@ var putSelfScore = function(details,callback){
         }
           //console.log("in node servcie"+details.score);
         collection.update({"submitted_by":details.submitted_by}, { $set:{"peer_score":peerScore,"self_score":details.self_score}}, {w:1}, function(err, result) {
-        var resultObj=JSON.parse(result);
-        if(err||!(resultObj.n)) { 
-          db.close();
-          callback("not ok"); 
-        } else {
-          db.close();
-          callback("ok");
-        }
-      }); 
-
-        }
+          var resultObj=JSON.parse(result);
+          //console.log(resultObj);
+          if(err||!(resultObj.n)) { 
+            db.close();
+            callback("not ok"); 
+          } else {
+            db.close();
+            callback("ok");
+          }
+        }); 
 
       });
-      
+
     });
-  };
+      
+};
+
 
   var doc={
-    "submitted_by":"",
+    "submitted_by":"58da0689b3125c15b59c6770",
     "self_score":80
   };
 

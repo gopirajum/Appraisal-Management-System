@@ -147,6 +147,18 @@ router.post('/PutSelfForm', function(req, res) {
   });
 });
 
+router.post('/PutSelfScore', function(req, res) {
+  authentication.putSelfScore(req.body,function(status,score) {
+    if(status=="ok") {
+      res.json(score);
+    } else {
+      res.status(400).send({
+        message: 'This is an error!'
+      });
+    }
+  });
+});
+
 router.post('/GetEmployees', function(req, res) {
  authentication.getEmployees(function(status,employees) {
    if(status=="ok"){

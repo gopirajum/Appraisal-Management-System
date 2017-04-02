@@ -79,6 +79,17 @@ routerApp.config(function($stateProvider, $urlRouterProvider) {
 
   }
  })
+  .state('home.progress', {
+  url: '/progress',
+   //controller:'addEmployeeCtrl',
+  views: {
+    'container': {
+      templateUrl: '/angular/views/admin/progress.html',
+      controller:'EmployeesCtrl'
+    }
+
+  }
+ })
   .state('home.self_form', {
    url: '/self_form/:review_token',
    views: {
