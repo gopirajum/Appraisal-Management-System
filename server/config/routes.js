@@ -63,6 +63,18 @@ router.post('/updateOfficialDetails', function(req, res) {
   }); 
 });
 
+router.post('/updateSalaryDetails', function(req, res) {
+  authentication.update_salary_details(req.body,function(status) {
+    if(status=="ok"){
+      res.send('success');
+    } else {
+      res.status(400).send({
+        message: 'This is an error!'
+      });
+    }
+  }); 
+});
+
 router.post('/reset_password', function(req, res) {
   authentication.reset_password(req.body,function(status) {
     if(status=="ok") {

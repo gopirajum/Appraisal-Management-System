@@ -44,13 +44,14 @@ appraisalManagement_controllers.controller('EmployeesCtrl',['$scope', '$rootScop
   }
 
   $scope.update_official_details = function(details){
-    details.key=$scope.key;
     employees.update_official_details(details).then(function(response){
-    if(details) {
-      details.date = new Date(details.date);
-      $scope.project=details;
-    }
-    $state.go('home.profile');
+    
+    });
+  }
+
+  $scope.update_salary_details = function(details){
+    employees.update_salary_details(details).then(function(response){
+    
     });
   }
 
@@ -67,6 +68,7 @@ appraisalManagement_controllers.controller('EmployeesCtrl',['$scope', '$rootScop
    if(emp.official_details.joining_date){emp.official_details.joining_date= new Date(emp.official_details.joining_date);}
    $scope.personal_details=emp.personal_details;
    $scope.official_details=emp.official_details;
+   $scope.salary=emp.salary_details;
    $scope.key=emp.key;
    $scope.questions=emp.questions;
 

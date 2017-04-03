@@ -12,6 +12,8 @@ appraisalManagement_controllers.controller('AuthCtrl',['$scope', '$rootScope', '
           //$scope.current_user=details;
           $scope.personal_details=details.personal_details;
           $scope.official_details=details.official_details;
+          $scope.salary=details.salary_details;
+
         }
         session.set_user(details);
         console.log("designation"+details.personal_details.designation);

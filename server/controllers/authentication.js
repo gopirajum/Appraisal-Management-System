@@ -1,4 +1,5 @@
 var mongo_client = require('mongodb').MongoClient;
+var ObjectID = require('mongodb').ObjectID;
 var nodemailer = require('nodemailer');
 
 var authentication_node_service = function() {
@@ -29,6 +30,19 @@ var authentication_node_service = function() {
               callback("not ok",null);
             }
           }); 
+
+          var salary_collection = db.collection('salary_details');
+          salary_collection.findOne({key:item._id}, function(err, salaryItem) {
+            if(salaryItem){
+              employee.salary_details=salaryItem;
+              
+            } else {
+              db.close();
+              callback("not ok",null);
+            }
+          }); 
+
+
           var official_details_collection = db.collection('official_details');
           official_details_collection.findOne({key:item._id}, function(err, officialItem) {
 
@@ -66,56 +80,67 @@ var authentication_node_service = function() {
       };
       login_collection.insert(login_doc, {w:1}, function(err, loginresult) {
         if(!err) {
-          var collection = db.collection('personal_info');  
           details.key=loginresult.ops[0]._id//accessing the _id of login_doc inserted
 
-          //inserting into official details
-          var offcial_collection=db.collection('official_details');
-          var doc={"key":details.key};
-          offcial_collection.insert(doc, {w:1}, function(err, result) {
-            if(err){
-              db.close();
-              callback("not ok");
+          //sending mail
+          var transporter = nodemailer.createTransport({
+            service: 'Gmail',
+            auth: {
+              user: 'last7439@gmail.com', // Your email id
+              pass: 'navtechadmin' // Your password
             }
           });
+          var text = 'Hello world from \n\n' + details.name +'your link is  '+'http://localhost:9000/#/reset_password/'+access_token;
+          var mailOptions = {
+            from: 'last7439@gmail.com', // sender address
+            to: details.email, // list of receivers
+            subject: 'Reset password', // Subject line
+            text: text //, // plaintext body
+            // html: '<b>Hello world ✔</b>' // You can choose to send an HTML body instead
+          };
 
-          collection.insert(details, {w:1}, function(err, result) {
-            if(!err) {
-              //sending mail
-              var transporter = nodemailer.createTransport({
-                service: 'Gmail',
-                auth: {
-                  user: 'last7439@gmail.com', // Your email id
-                  pass: 'navtechadmin' // Your password
-                }
-              });
-              var text = 'Hello world from \n\n' + details.name +'your link is  '+'http://localhost:9000/#/reset_password/'+access_token;
-              var mailOptions = {
-                from: 'last7439@gmail.com', // sender address
-                to: details.email, // list of receivers
-                subject: 'Reset password', // Subject line
-                text: text //, // plaintext body
-                // html: '<b>Hello world ✔</b>' // You can choose to send an HTML body instead
-              };
-
-              transporter.sendMail(mailOptions, function(error, info){
-                if(error){
-                  console.log(error);
-                  //res.json({yo: 'error'});
+          transporter.sendMail(mailOptions, function(error, info){
+            if(error){
+              console.log(error);
+              callback("not ok");
+            }
+            else{
+              //inserting into personal info
+              var collection = db.collection('personal_info');  
+              collection.insert(details, {w:1}, function(err, result) {
+                if(err) {
+                  db.close();
                   callback("not ok");
-                }
-                else{
-                  console.log('Message sent: ' + info.response);
-                  //res.json({yo: info.response});
+                }else{
+                  //inserting into official details
+                  var offcial_collection=db.collection('official_details');
+                  var doc={"key":details.key};
+                  offcial_collection.insert(doc, {w:1}, function(err, result) {
+                    if(err){
+                      db.close();
+                      callback("not ok");
+                    }
+                    else{
+                      //inserting into salary details
+                      var salary_collection=db.collection('salary_details');
+                      var doc={"key":details.key};
+                      salary_collection.insert(doc, {w:1}, function(err, result) {
+                        if(err){
+                          db.close();
+                          callback("not ok");
+                        }else{
+                          db.close();//closing db connection
+                          callback("ok");
+                        }
+                      });
+
+                    }
+                  });                  
                 }
               });
-              db.close();//closing db connection
-              callback("ok");
-            } else {
-              db.close();
-              callback("not ok");
             }
           });
+        
         } else {
           db.close();
           callback("not ok");
@@ -130,23 +155,29 @@ var authentication_node_service = function() {
         callback(err); 
       }
       var collection = db.collection('personal_info');
-      var keyemail=details.email;
-      collection.remove({"email":keyemail}, {w:1}, function(err, result) {
-        if(!err) {
-          collection.insert(details, {w:1}, function(err, result) {
-            if(!err){
-              console.log("document inserted: "+result);
-              db.close();//closing db connection
-              callback("ok");
-            }
-            else{
-              db.close();
-              callback("not ok");
-            }
-          });
-        } else {
+      var id = new ObjectID(details._id);
+
+      collection.update({_id:id}, {
+         $set:{
+          name:details.name,
+          code:details.code,
+          date:details.date,
+          father_name:details.father_name,
+          gender:details.gender,
+          email:details.email,
+          designation:details.designation,
+          phone_number:details.phone_number
+         }
+        },
+       {w:1}, function(err, result) {
+        if(err){
+          db.close();
           callback("not ok");
+        }else{
+          db.close();
+          callback("ok");
         }
+
       });
     });
   };
@@ -157,23 +188,63 @@ var authentication_node_service = function() {
         callback(err); 
       }
       var collection = db.collection('official_details');
-      var key=details.key;
-      collection.remove({"key":key}, {w:1}, function(err, result) {
-        if(!err) {
-          collection.insert(details, {w:1}, function(err, result) {
-            if(!err){
-              console.log("document inserted: "+result);
-              db.close();//closing db connection
-              callback("ok");
-            }
-            else{
-              db.close();
-              callback("not ok");
-            }
-          });
-        } else {
+      var id = new ObjectID(details._id);
+
+      collection.update({_id:id}, {
+         $set:{
+          joining_date:details.joining_date,
+          job_type:details.job_type,
+          department:details.department,
+          designation:details.designation,
+          location:details.location,
+          manager_name:details.manager_name,
+          salary_account_number:details.salary_account_number,
+          pan_number:details.pan_number,
+          pf_number:details.pf_number
+         }
+        },
+       {w:1}, function(err, result) {
+        if(err){
+          db.close();
           callback("not ok");
+        }else{
+          db.close();
+          callback("ok");
         }
+
+      });
+    });
+  };
+
+  this.update_salary_details = function(details,callback){
+    mongo_client.connect("mongodb://localhost/test", function(err, db) {
+      if(err) { 
+        callback(err); 
+      }
+      var collection = db.collection('salary_details');
+      var id = new ObjectID(details._id);
+
+      collection.update({_id:id}, {
+         $set:{
+          ctc:details.ctc,
+          variable_bonus:details.variable_bonus,
+          basic:details.basic,
+          house_rent_allowance:details.house_rent_allowance,
+          conveyance_allowance:details.conveyance_allowance,
+          medical_allowance:details.medical_allowance,
+          special_allowance:details.special_allowance,
+          profession_tax:details.profession_tax
+         }
+        },
+       {w:1}, function(err, result) {
+        if(err){
+          db.close();
+          callback("not ok");
+        }else{
+          db.close();
+          callback("ok");
+        }
+
       });
     });
   };
@@ -319,6 +390,7 @@ var authentication_node_service = function() {
       var employees_list=[];
       var collection = db.collection('personal_info');
       var official_collection=db.collection('official_details');
+      var salary_collection=db.collection('salary_details');
       var selfReview_collection=db.collection('self_reviews');
       collection.find().toArray(function(err, items) {
         if(items) {
@@ -339,10 +411,12 @@ var authentication_node_service = function() {
                   //console.log("337  "+JSON.stringify(emp)+"\n");
                   employees_list.push(emp);
                   //console.log("\nat i "+i);
-                  pushQuestions(i,items,employees_list, function(){
-                    pushOfficialDetails(i+1,items,function(empList){
-                      //console.log("after recieving from"+(i+1));
-                      callbackpod(empList);
+                  pushSalaryDetails(i,items,employees_list, function(){
+                    pushQuestions(i,items,employees_list, function(){
+                      pushOfficialDetails(i+1,items,function(empList){
+                        //console.log("after recieving from"+(i+1));
+                        callbackpod(empList);
+                      });
                     });
                   });
 
@@ -381,9 +455,30 @@ var authentication_node_service = function() {
 
             }
             else{
-              callbackQ(employees_list);
+              callbackQ();
             }
           }
+
+          var pushSalaryDetails = function(i,items,employees_list,callbackSD){
+            if(i<items.length){
+              
+              salary_collection.findOne({key:items[i].key},function(err, item4) {
+
+                if(item4){
+
+                  employees_list[i].salary_details=item4;
+                  callbackSD();
+                }else if(err){
+                  db.close();//closing db connection
+                  callback(null);
+                }
+              });
+
+            }
+            else{
+              callbackQ();
+            }
+          }          
 
           pushOfficialDetails(0,items,function(employees_list){
             db.close();//closing db connection

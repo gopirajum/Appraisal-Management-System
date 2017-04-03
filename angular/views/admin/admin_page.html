@@ -1,11 +1,11 @@
 <div class="row">
 	<div class="col-md-3 profileLeft">
 			<div><h3>Employee List</h3></div>
-			<div ng-repeat="employee in employees_list">
-		      <ul class="nav nav-pills nav-stacked" ng-model="selected">
-		  				<li ng-click="get_selected_employee($index)"><a href="">{{employee.personal_details.name }}</a></li>
-					</ul>
-	    </div>
+			<md-list flex>
+           <md-list-item  ng-repeat="employee in employees_list" ng-click="get_selected_employee($index)">
+                <a href="">{{employee.personal_details.name }}</a>
+           </md-list-item>
+       </md-list>
 	</div>
 	  <div class="col-md-9">
     <div ng-cloak>
@@ -71,11 +71,6 @@
                         <div ng-message="pattern">Must be a valid 10 digit phone number</div>
                       </div>
                     </md-input-container>
-                    <div layout="row" layout-align="end">
-                      <div flex="30">
-                        <md-button align="center" class="md-raised md-primary login" ng-click="update_employee(personal_details)">Submit</md-button>
-                      </div>
-                    </div>
                   </form>
                 </md-content>
               </div>
@@ -136,9 +131,9 @@
                       <md-input-container flex="50">
                         <label>Manager Name</label>
                         <md-select name="mname" ng-model="official_details.manager_name">
-                          <md-option value="a">A</md-option>
-                          <md-option value="b">B</md-option>
-                          <md-option value="c">C</md-option>
+                          <md-option value="Sneha">Sneha</md-option>
+                          <md-option value="Shyam">Shyam</md-option>
+                          <md-option value="Gopi raju">Gopi Raju</md-option>
                         </md-select>
                       </md-input-container>
                       <md-input-container flex="50">
@@ -167,7 +162,7 @@
                     </div>
                     <div layout="row" layout-align="end">
                       <div flex="30">
-                        <md-button align="center" class="md-raised md-primary login" ng-click="update_employee(official_details)">Submit</md-button>
+                        <md-button align="center" class="md-raised md-primary login" ng-click="update_official_details(official_details)">Submit</md-button>
                       </div>
                     </div>
                   </form>
@@ -229,6 +224,11 @@
                         </md-input-container>
                       </div>
                     </div>
+                    <div layout="row" layout-align="end">
+                      <div flex="30">
+                        <md-button align="center" class="md-raised md-primary login" ng-click="update_salary_details(salary)">Update Salary</md-button>
+                      </div>
+                    </div>                    
                   </form>
                 </md-content>
               </div>

@@ -34,7 +34,16 @@ angular.module('appraisalManagement').service('employees', ['$http', '$statePara
   var update_official_details = function(details){
     return $http.post('/updateOfficialDetails',details).success(function(response) {
       //$rootScope.current_user = details.email;
-      toastr.success('Successfully updated');
+      toastr.success('Official Details Successfully updated');
+    }).error(function(response) {
+      toastr.error('Unable to update');
+    });
+  }
+
+  var update_salary_details = function(details){
+    return $http.post('/updateSalaryDetails',details).success(function(response) {
+      //$rootScope.current_user = details.email;
+      toastr.success('Salary Details Successfully updated');
     }).error(function(response) {
       toastr.error('Unable to update');
     });
@@ -112,6 +121,7 @@ angular.module('appraisalManagement').service('employees', ['$http', '$statePara
     add_employee: add_employee,
     update_employee: update_employee,
     update_official_details: update_official_details,
+    update_salary_details:update_salary_details,
     peer_form_load: peer_form_load,
     self_form_load: self_form_load,
     appraisal_init: appraisal_init,
