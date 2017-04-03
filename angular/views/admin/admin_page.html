@@ -1,11 +1,11 @@
-<div class="row">
+<div class="row" ng-controller="EmployeesCtrl" ng-init="self_form_load()">
 	<div class="col-md-3 profileLeft">
 			<div><h3>Employee List</h3></div>
-			<div ng-repeat="employee in employees_list">
-		      <ul class="nav nav-pills nav-stacked" ng-model="selected">
-		  				<li ng-click="get_selected_employee($index)"><a href="">{{employee.name }}</a></li>
-					</ul>
-	    </div>
+				<md-list flex>
+        	<md-list-item  ng-repeat="employee in employees_list" ng-click="get_selected_employee($index)">
+         		<a href="">{{employee.name }}</a>
+        	</md-list-item>
+        </md-list>
 	</div>
 	<div class="col-md-9">
 		<div ng-cloak>
@@ -18,7 +18,8 @@
                   <form name="personal_details" class="test">
                     <md-input-container class="md-block">
                       <label>Employee Name</label>
-                      <input md-maxlength="30" required name="ename" ng-model="project.name">
+                      <input md-maxlength="30" required name="ename" 
+                      	ng-model="personal_details.name">
                       <div ng-messages="personal_details.ename.$error">
                         <div ng-message="required">This is required.</div>
                         <div ng-message="md-maxlength">Your Name must be less than 30 characters long.</div>
@@ -27,23 +28,23 @@
                     <div layout="row">
                       <md-input-container flex="50">
                         <label>Employee Code</label>
-                        <input name="eCode" ng-model="project.code" ng-readonly="true">
+                        <input name="eCode" ng-model="personal_details.code" ng-readonly="true">
                         <div ng-messages="personal_details.eCode.$error"></div>
                       </md-input-container>
                       <md-input-container flex="50">
-                        <md-datepicker ng-model="project.date" md-placeholder="Enter Date Of Birth"></md-datepicker>
+                        <md-datepicker ng-model="personal_details.date" md-placeholder="Enter Date Of Birth"></md-datepicker>
                       </md-input-container>
                     </div>
                     <div layout="row">
                       <md-input-container flex="50">
                         <label>Father's Name</label>
-                        <input name="fName" ng-model="project.father_name">
+                        <input name="fName" ng-model="personal_details.father_name">
                         <div ng-messages="personal_details.fName.$error">
                         </div>
                       </md-input-container>
                       <md-input-container flex="50">
                         <label>Gender</label>
-                        <md-select required name="Gender" ng-model="project.gender">
+                        <md-select required name="Gender" ng-model="personal_details.gender">
                           <md-option value="male">Male</md-option>
                           <md-option value="female">Female</md-option>
                           <md-option value="others">Others</md-option>
@@ -55,7 +56,7 @@
                     </div>
                     <md-input-container class="md-block">
                       <label>Employee Email</label>
-                      <input required type="email" name="eEmail" ng-model="project.email"
+                      <input required type="email" name="eEmail" ng-model="personal_details.email"
                              minlength="10" maxlength="100" ng-pattern="/^.+@.+\..+$/" />
                       <div ng-messages="personal_details.eEmail.$error" role="alert">
                         <div ng-message-exp="['required', 'minlength', 'maxlength', 'pattern']">
@@ -65,7 +66,7 @@
                     </md-input-container>
                     <md-input-container class="md-block">
                       <label>Phone Number</label>
-                      <input required type="number" step="any" name="phno" ng-model="project.phone_number" ng-pattern="/^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/" />
+                      <input required type="number" step="any" name="phno" ng-model="personal_details.phone_number" ng-pattern="/^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/" />
                       <div ng-messages="personal_details.phno.$error" multiple md-auto-hide="false">
                         <div ng-message="required">You must enter a phone number</div>
                         <div ng-message="pattern">Must be a valid 10 digit phone number</div>
@@ -73,7 +74,7 @@
                     </md-input-container>
                     <div layout="row" layout-align="end">
                       <div flex="30">
-                        <md-button align="center" class="md-raised md-primary login" ng-click="update_employee(project)">Submit</md-button>
+                        <md-button align="center" class="md-raised md-primary login" ng-click="update_employee(personal_details)">Submit</md-button>
                       </div>
                     </div>
                   </form>
@@ -88,16 +89,16 @@
                   <form name="official_details" class="test">
                     <div layout="row">
                       <md-input-container flex="50">
-                        <md-datepicker ng-model="project.joining_date" md-placeholder="Enter Joining Date"></md-datepicker>
+                        <md-datepicker ng-model="official_details.joining_date" md-placeholder="Enter Joining Date"></md-datepicker>
                       </md-input-container>
                       <md-input-container flex="50">
-                        <input type="number" ng-model="confirmation_period" placeholder="Confirmation Period" />
+                        <input type="number" ng-model="official_details.confirmation_period" placeholder="Confirmation Period" />
                       </md-input-container>
                     </div>
                     <div layout="row">
                       <md-input-container flex="50">
                         <label>Job Type</label>
-                        <md-select name="jType" ng-model="project.job_type">
+                        <md-select name="jType" ng-model="official_details.job_type">
                           <md-option value="permanent">Permanent</md-option>
                           <md-option value="intern">Intern</md-option>
                           <md-option value="contract">Contract</md-option>
@@ -105,7 +106,7 @@
                       </md-input-container>
                       <md-input-container flex="50">
                         <label>Department</label>
-                        <md-select name="dept" ng-model="project.department">
+                        <md-select name="dept" ng-model="official_details.department">
                           <md-option value="development">Development</md-option>
                           <md-option value="qa">QA</md-option>
                           <md-option value="hr">HR</md-option>
@@ -115,7 +116,7 @@
                     <div layout="row">
                       <md-input-container flex="50">
                         <label>Designation</label>
-                        <md-select name="design" ng-model="project.designation">
+                        <md-select name="design" ng-model="official_details.designation">
                           <md-option value="Senior Software Engineer">Senior Software Engineer</md-option>
                           <md-option value="Software Engineer">Software Engineer</md-option>
                           <md-option value="Manager">Manager</md-option>
@@ -125,7 +126,7 @@
                       </md-input-container>
                       <md-input-container flex="50">
                         <label>Location</label>
-                        <md-select name="loc" ng-model="project.location">
+                        <md-select name="loc" ng-model="official_details.location">
                           <md-option value="hyderabad">Hyderabad</md-option>
                           <md-option value="bangalore">Bangalore</md-option>
                           <md-option value="mumbai">Mumbai</md-option>
@@ -135,7 +136,7 @@
                     <div layout="row">
                       <md-input-container flex="50">
                         <label>Manager Name</label>
-                        <md-select name="mname" ng-model="project.manager_name">
+                        <md-select name="mname" ng-model="official_details.manager_name">
                           <md-option value="a">A</md-option>
                           <md-option value="b">B</md-option>
                           <md-option value="c">C</md-option>
@@ -143,7 +144,7 @@
                       </md-input-container>
                       <md-input-container flex="50">
                         <label>Salary Account Number</label>
-                        <input required name="salAcc" ng-model="project.salary_account_number" />
+                        <input required name="salAcc" ng-model="official_details.salary_account_number" />
                         <div ng-messages="official_details.salAcc.$error">
                           <div ng-message="required">This is required.</div>
                         </div>
@@ -152,14 +153,14 @@
                     <div layout="row">
                       <md-input-container flex="50">
                         <label>PAN Number</label>
-                        <input required name="panNum" ng-model="project.pan_number" />
+                        <input required name="panNum" ng-model="official_details.pan_number" />
                         <div ng-messages="official_details.panNum.$error">
                           <div ng-message="required">This is required.</div>
                         </div>
                       </md-input-container>
                       <md-input-container flex="50">
                         <label>PF Number</label>
-                        <input required name="pfNum" ng-model="project.pf_number" />
+                        <input required name="pfNum" ng-model="official_details.pf_number" />
                         <div ng-messages="official_details.pfNum.$error">
                           <div ng-message="required">This is required.</div>
                         </div>
@@ -167,7 +168,7 @@
                     </div>
                     <div layout="row" layout-align="end">
                       <div flex="30">
-                        <md-button align="center" class="md-raised md-primary login" ng-click="update_employee(project)">Submit</md-button>
+                        <md-button align="center" class="md-raised md-primary login" ng-click="update_employee(official_details)">Submit</md-button>
                       </div>
                     </div>
                   </form>
@@ -182,12 +183,12 @@
                   <form name="salary" class="test">
                     <md-input-container class="md-block">
                       <label>Actual CTC</label>
-                      <input type="ctc" name="ctc" ng-model="project.ctc" />
+                      <input type="ctc" name="ctc" ng-model="salary.ctc" />
                       <div ng-messages="salary.ctc.$error" role="alert"></div>
                     </md-input-container>
                     <md-input-container class="md-block">
                       <label>Variable Bonus</label>
-                      <input type="vbonus" name="vbonus" ng-model="project.variable_bonus" />
+                      <input type="vbonus" name="vbonus" ng-model="salary.variable_bonus" />
                       <div ng-messages="salary.vbonus.$error" role="alert"></div>
                     </md-input-container>
                     <h4>Display CTC Based Components<input type="checkbox" ng-model="myCheck"></h4>
@@ -195,36 +196,36 @@
                       <div layout="row">
                         <md-input-container flex="50">
                           <label>Basic</label>
-                          <input name="basic" ng-model="project.basic">
+                          <input name="basic" ng-model="salary.basic">
                           <div ng-messages="salary.basic.$error"></div>
                         </md-input-container>
                         <md-input-container flex="50">
                            <label>House Rent Allowance</label>
-                          <input name="hra" ng-model="project.house_rent_allowance">
+                          <input name="hra" ng-model="salary.house_rent_allowance">
                           <div ng-messages="salary.hra.$error"></div>
                         </md-input-container>
                       </div>
                       <div layout="row">
                         <md-input-container flex="50">
                           <label>Conveyance Allowance</label>
-                          <input name="callow" ng-model="project.conveyance_allowance">
+                          <input name="callow" ng-model="salary.conveyance_allowance">
                           <div ng-messages="salary.callow.$error"></div>
                         </md-input-container>
                         <md-input-container flex="50">
                            <label>Medical Allowance</label>
-                          <input name="mallow" ng-model="project.medical_allowance">
+                          <input name="mallow" ng-model="salary.medical_allowance">
                           <div ng-messages="salary.mallow.$error"></div>
                         </md-input-container>
                       </div>
                       <div layout="row">
                         <md-input-container flex="50">
                           <label>Special Allowance</label>
-                          <input name="sallow" ng-model="project.special_allowance">
+                          <input name="sallow" ng-model="salary.special_allowance">
                           <div ng-messages="salary.sallow.$error"></div>
                         </md-input-container>
                         <md-input-container flex="50">
                            <label>Profession Tax</label>
-                          <input name="ptax" ng-model="project.profession_tax">
+                          <input name="ptax" ng-model="salary.profession_tax">
                           <div ng-messages="salary.ptax.$error"></div>
                         </md-input-container>
                       </div>
@@ -237,17 +238,31 @@
               </script>
             </md-content>
           </md-tab>
-          <md-tab label="Employee Docs">
+          <md-tab label="Self Assessment Form">
             <md-content class="md-padding">
-              <h5 class="md-display-1">Upload the documents if any</h5><br><br>
-              <input type = "file" file-model = "myFile"/><br><br><br>
-              <button ng-click = "uploadFile()">upload me</button>
+              <form>
+					        <div ng-repeat="x in questions"><h4>{{x.question_num+". "}} {{x.question}}</h4>
+					          <textarea style="width:100%" ng-model="x.answer"></textarea>
+					        </div><br>
+									<md-radio-group layout="row">
+									  <md-radio-button value=0><h4> Exceptional </h4></md-radio-button>
+									  <md-radio-button value=1><h4> More Than Satisfactory </h4></md-radio-button>
+									  <md-radio-button value=2><h4> Satisfactory </h4></md-radio-button>
+									  <md-radio-button value=3><h4> Needs Improvement </h4></md-radio-button>
+									  <md-radio-button value=4><h4> Unsatisfactory </h4></md-radio-button>
+									</md-radio-group>
+					        <md-input-container class="md-block">
+					          <div layout="row" layout-align="end">
+					            <div flex="30">
+					              <md-button align="center" class="md-raised md-primary login" ng-click="">Submit</md-button>
+					            </div>
+					          </div>
+					        </md-input-container>
+					      </form>
             </md-content>
           </md-tab>      
         </md-tabs>
       </md-content>
     </div>
-
-
 	</div>
 </div>

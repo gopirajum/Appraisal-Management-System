@@ -3,6 +3,7 @@ appraisalManagement_controllers.controller('EmployeesCtrl',['$scope', '$rootScop
   function($scope, $rootScope, $state, employees, session) {
 
   $scope.init = function() {
+    $scope.official_details = {}
     session.get_user().then(function(current_user) {
       if(current_user != null) {
         console.log(current_user)
@@ -57,7 +58,8 @@ appraisalManagement_controllers.controller('EmployeesCtrl',['$scope', '$rootScop
   //console.log(" in controller "+$scope.employees_list[index]);
    var emp = $scope.employees_list[index];
    emp.date = new Date(emp.date);
-   $scope.project = emp;
+   $scope.personal_details = emp;
+   //$scope.project=emp;
 
  }
 
