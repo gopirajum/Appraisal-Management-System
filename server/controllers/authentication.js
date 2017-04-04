@@ -193,6 +193,7 @@ var authentication_node_service = function() {
       collection.update({_id:id}, {
          $set:{
           joining_date:details.joining_date,
+          confirmation_period:details.confirmation_period,
           job_type:details.job_type,
           department:details.department,
           designation:details.designation,
@@ -380,6 +381,69 @@ var authentication_node_service = function() {
       callback("ok");
     });
   };
+
+  this.send_appraisal = function(details,callback){
+
+  var increment=parseFloat(details.overall_score);
+  //console.log("increment % "+increment);
+
+  if(increment>=30&&increment<=50){increment=0.025;}
+  else if(increment>50&&increment<=75){increment=0.10;}
+  else if(increment>75&&increment<=85){increment=0.15;}
+  else if(increment>85&&increment<=100){increment=0.25;}
+
+  //console.log("\nafter if else"+increment);
+  var increased = parseFloat(details.salary_details.basic)*increment;
+  var newBasic=parseFloat(details.salary_details.basic)+increased;
+  var newctc=parseFloat(details.salary_details.ctc)+increased;
+
+  //sending mail
+  var transporter = nodemailer.createTransport({
+    service: 'Gmail',
+    auth: {
+      user: 'last7439@gmail.com', // Your email id
+      pass: 'navtechadmin' // Your password
+    }
+  });
+  var text = 'Hello ' + details.personal_details.name +"\nPeer score "+details.peer_score+"\nManager Score "+details.self_score+"\nOverall score "+details.overall_score+
+  "\nYour increment is "+increased+"\nYour new CTC is "+newctc;
+  var mailOptions = {
+    from: 'last7439@gmail.com', // sender address
+    to: details.personal_details.email, // list of receivers
+    subject: 'Appraisal', // Subject line
+    text: text //, // plaintext body
+    // html: '<b>Hello world ✔</b>' // You can choose to send an HTML body instead
+  };
+
+  transporter.sendMail(mailOptions, function(error, info){
+    if(error){
+      console.log(error);
+      callback("not ok");
+    }
+    else{
+      //updating the salary
+      mongo_client.connect("mongodb://localhost/test", function(err, db) {
+        if(err) { 
+          callback(err); 
+        }
+        var collection = db.collection('salary_details');
+        var id = new ObjectID(details.salary_details._id);
+
+        collection.update({_id:id}, {$set:{ctc:newctc,basic:newBasic}},{w:1}, function(err, result) {
+          if(err){
+            db.close();
+            callback("not ok");
+          }else{
+            db.close();
+            callback("ok");
+          }
+
+        });
+      });
+    }
+  });
+};
+
 
   this.getEmployees=function(callback){
    //console.log("in node server.js");

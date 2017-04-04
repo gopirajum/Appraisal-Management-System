@@ -19,6 +19,7 @@ appraisalManagement_controllers.controller('EmployeesCtrl',['$scope', '$rootScop
           if($scope.official_details.joining_date){
            $scope.official_details.joining_date=new Date($scope.official_details.joining_date);
           }
+          $scope.salary=current_user.salary_details;
         }
       } else {
         $state.go('root');
@@ -37,9 +38,8 @@ appraisalManagement_controllers.controller('EmployeesCtrl',['$scope', '$rootScop
     employees.update_employee(details).then(function(response){
     if(details) {
       details.date = new Date(details.date);
-      $scope.project=details;
+      $scope.personal_details=details;
     }
-    $state.go('home.profile');
     });
   }
 
@@ -57,6 +57,14 @@ appraisalManagement_controllers.controller('EmployeesCtrl',['$scope', '$rootScop
 
   $scope.appraisal_init = function(employeesList) {
     employees.appraisal_init(employeesList).then(function(response){
+    });
+  }
+  
+  //confirming appraisal
+  $scope.send_appraisal = function(score) {
+    console.log("in 65 controller");
+    employees.send_appraisal(score).then(function(response){
+      $state.go('home.admin_page');
     });
   }
 
@@ -77,10 +85,11 @@ appraisalManagement_controllers.controller('EmployeesCtrl',['$scope', '$rootScop
   $scope.put_self_score = function(score){
     var doc={
       "submitted_by":$scope.key,
-      "self_score":score
+      "self_score":score,
+      "personal_details":$scope.personal_details,
+      "salary_details":$scope.salary
     }
     employees.put_self_score(doc).then(function(response){
-    console.log("in controller 81 res"+JSON.stringify(response.data));
     $scope.score=response.data;
     $state.go('home.progress');
     });
@@ -91,6 +100,7 @@ appraisalManagement_controllers.controller('EmployeesCtrl',['$scope', '$rootScop
     var overall = parseFloat($scope.score.peer_score)+parseFloat($scope.score.self_score);
     overall=overall/2;
     $scope.score.overall_score=overall;
+    console.log("in controller"+JSON.stringify($scope.score));
   }
 
 

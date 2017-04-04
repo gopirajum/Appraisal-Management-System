@@ -7,6 +7,7 @@ appraisalManagement_controllers.controller('AuthCtrl',['$scope', '$rootScope', '
         //console.log("response "+JSON.stringify(response.data));
         var details = response.data;
         if(details){
+          $scope.headertest=details.personal_details.designation;
           details.personal_details.date = new Date(details.personal_details.date);
           details.official_details.joining_date = new Date(details.official_details.joining_date);
           //$scope.current_user=details;

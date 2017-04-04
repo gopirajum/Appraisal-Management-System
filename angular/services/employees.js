@@ -24,7 +24,6 @@ angular.module('appraisalManagement').service('employees', ['$http', '$statePara
 
   var update_employee = function(details){
     return $http.post('/updateEmployee',details).success(function(response) {
-      $rootScope.current_user = details.email;
       toastr.success('Successfully updated');
     }).error(function(response) {
       toastr.error('Unable to update');
@@ -76,6 +75,16 @@ angular.module('appraisalManagement').service('employees', ['$http', '$statePara
     });
   }
   
+  //after assesing employee confirming appraisal
+  var send_appraisal = function(score){
+    return $http.post('/sendAppraisal',score).success(function(response) {
+      //$rootScope.current_user = details.email;
+      toastr.success('Successfully sent');
+    }).error(function(response) {
+      toastr.error('Unable to send');
+    });
+  }
+
   var get_employees = function(){
    return $http.post('/GetEmployees').success(function(response) {
     // employees = response;
@@ -108,7 +117,6 @@ angular.module('appraisalManagement').service('employees', ['$http', '$statePara
   var put_self_score = function(doc){
     return $http.post('PutSelfScore',doc).success(function(response) {
       score=response;
-      console.log("in service"+score);
       toastr.success('Rating Successful');
     }).error(function(response) {
       toastr.error('Failed to rate');
@@ -125,6 +133,7 @@ angular.module('appraisalManagement').service('employees', ['$http', '$statePara
     peer_form_load: peer_form_load,
     self_form_load: self_form_load,
     appraisal_init: appraisal_init,
+    send_appraisal:send_appraisal,
     get_employees:get_employees,
     put_peer_form:put_peer_form,
     put_self_form:put_self_form,

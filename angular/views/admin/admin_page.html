@@ -71,6 +71,11 @@
                         <div ng-message="pattern">Must be a valid 10 digit phone number</div>
                       </div>
                     </md-input-container>
+                    <div layout="row" layout-align="end">
+                      <div flex="30">
+                        <md-button align="center" class="md-raised md-primary login" ng-click="update_employee(personal_details)">Submit</md-button>
+                      </div>
+                    </div>
                   </form>
                 </md-content>
               </div>
@@ -86,7 +91,7 @@
                         <md-datepicker ng-model="official_details.joining_date" md-placeholder="Enter Joining Date"></md-datepicker>
                       </md-input-container>
                       <md-input-container flex="50">
-                        <input type="number" ng-model="confirmation_period" placeholder="Confirmation Period" />
+                        <input type="number" ng-model="official_details.confirmation_period" placeholder="Confirmation Period" />
                       </md-input-container>
                     </div>
                     <div layout="row">
@@ -243,13 +248,14 @@
                   <div ng-repeat="x in questions"><h4>{{x.question_num+". "}} {{x.question}}</h4>
                     <textarea style="width:100%" ng-model="x.answer"></textarea>
                   </div><br>
-                  <md-radio-group layout="row" ng-model="selfScore">
-                    <md-radio-button value=100><h4> Exceptional </h4></md-radio-button>
-                    <md-radio-button value=80><h4> More Than Satisfactory </h4></md-radio-button>
-                    <md-radio-button value=60><h4> Satisfactory </h4></md-radio-button>
-                    <md-radio-button value=40><h4> Needs Improvement </h4></md-radio-button>
-                    <md-radio-button value=20><h4> Unsatisfactory </h4></md-radio-button>
-                  </md-radio-group>
+                  <div ng-if="questions">
+                 <md-radio-group layout="row" ng-model="selfScore">
+                   <md-radio-button value=100><h4> Exceptional </h4></md-radio-button>
+                   <md-radio-button value=80><h4> More Than Satisfactory </h4></md-radio-button>
+                   <md-radio-button value=60><h4> Satisfactory </h4></md-radio-button>
+                   <md-radio-button value=40><h4> Needs Improvement </h4></md-radio-button>
+                   <md-radio-button value=20><h4> Unsatisfactory </h4></md-radio-button>
+                 </md-radio-group>
                   <md-input-container class="md-block">
                     <div layout="row" layout-align="end">
                       <div flex="30">
@@ -257,6 +263,11 @@
                       </div>
                     </div>
                   </md-input-container>
+                 </div>
+                 <div ng-if="!questions">
+                 <h3>Not yet reviewed</h3>
+                 </div>
+
                 </form>
             </md-content>
           </md-tab>        

@@ -123,6 +123,18 @@ router.post('/appraisal_init', function(req, res) {
   });
 });
 
+router.post('/sendAppraisal', function(req, res) {
+  authentication.send_appraisal(req.body,function(status) {
+    if(status=="ok") {
+      res.send("success");
+    } else {
+      res.status(400).send({
+        message: 'This is an error!'
+      });
+    }
+  });
+});
+
 router.post('/GetEmployees', function(req, res) {
   authentication.getEmployees(function(status,employees) {
     if(status=="ok") {

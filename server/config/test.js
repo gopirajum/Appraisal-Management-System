@@ -2,94 +2,52 @@ var mongo_client = require('mongodb').MongoClient;
 var ObjectID = require('mongodb').ObjectID;
 var nodemailer = require('nodemailer');
 
-var add_employee = function(details,callback){
-    mongo_client.connect("mongodb://localhost/test", function(err, db) {
-      if(err) { 
-        callback(err); 
-      }
-      var login_collection = db.collection('login');
-      var access_token = Math.random().toString(16).substring(2,12);
-      var login_doc={
-        "email":details.email,
-        "password":"",
-        "access_token":access_token
-      };
-      login_collection.insert(login_doc, {w:1}, function(err, loginresult) {
-        if(!err) {
-          details.key=loginresult.ops[0]._id//accessing the _id of login_doc inserted
+var send_appraisal = function(details,callback){
 
-          //sending mail
-          var transporter = nodemailer.createTransport({
-            service: 'Gmail',
-            auth: {
-              user: 'last7439@gmail.com', // Your email id
-              pass: 'navtechadmin' // Your password
-            }
-          });
-          var text = 'Hello world from \n\n' + details.name +'your link is  '+'http://localhost:9000/#/reset_password/'+access_token;
-          var mailOptions = {
-            from: 'last7439@gmail.com', // sender address
-            to: details.email, // list of receivers
-            subject: 'Reset password', // Subject line
-            text: text //, // plaintext body
-            // html: '<b>Hello world ✔</b>' // You can choose to send an HTML body instead
-          };
+  var increment=parseFloat(details.overall_score);
+  console.log("increment % "+increment);
 
-          transporter.sendMail(mailOptions, function(error, info){
-            if(error){
-              console.log(error);
-              callback("not ok");
-            }
-            else{
-              //inserting into personal info
-              var collection = db.collection('personal_info');  
-              collection.insert(details, {w:1}, function(err, result) {
-                if(err) {
-                  db.close();
-                  callback("not ok");
-                }else{
-                  //inserting into official details
-                  var offcial_collection=db.collection('official_details');
-                  var doc={"key":details.key};
-                  offcial_collection.insert(doc, {w:1}, function(err, result) {
-                    if(err){
-                      db.close();
-                      callback("not ok");
-                    }
-                    else{
-                      //inserting into salary details
-                      var salary_collection=db.collection('salary_details');
-                      var doc={"key":details.key};
-                      salary_collection.insert(doc, {w:1}, function(err, result) {
-                        if(err){
-                          db.close();
-                          callback("not ok");
-                        }else{
-                          db.close();//closing db connection
-                          callback("ok");
-                        }
-                      });
+  if(increment>=30&&increment<=50){increment=0.025;}
+  else if(increment>50&&increment<=75){increment=0.10;}
+  else if(increment>75&&increment<=85){increment=0.15;}
+  else if(increment>85&&increment<=100){increment=0.25;}
 
-                    }
-                  });                  
-                }
-              });
-            }
-          });
-        
-        } else {
-          db.close();
-          callback("not ok");
-        }
-      });
-    });
+  console.log("\nafter if else"+increment);
+  var increased = parseFloat(details.salary_details.basic)*increment;
+  var newBasic=parseFloat(details.salary_details.basic)+increased;
+  var newctc=parseFloat(details.salary_details.ctc)+increased;
+
+  //sending mail
+  var transporter = nodemailer.createTransport({
+    service: 'Gmail',
+    auth: {
+      user: 'last7439@gmail.com', // Your email id
+      pass: 'navtechadmin' // Your password
+    }
+  });
+  var text = 'Hello ' + details.personal_details.name +"\n peer score "+details.peer_score+"\n Manager Score"+details.self_score+"\n overall score"+details.overall_score+
+  "\nYour increment is "+increased+"\n Your new CTC is"+newctc;
+  var mailOptions = {
+    from: 'last7439@gmail.com', // sender address
+    to: details.personal_details.email, // list of receivers
+    subject: 'Appraisal', // Subject line
+    text: text ,//, // plaintext body
+    html:  '<h4>Hello '+details.personal_details.name+'.Here is your Feedback</h4><div>Peer Score : '+details.peer_score+'</div><div>Manager Score : '+details.self_score+'</div><div>Overall Score : '+details.overall_score+'</div><h4>Your Salary Details</h4><div>Increment : '+increased+'</div><div>New CTC : '+newctc+'</div>'
   };
 
-  var testDoc={
-    "email":"susmitha.akkineni999@gmail.com",
-    "name":"susi papa"
-  };
+  transporter.sendMail(mailOptions, function(error, info){
+    if(error){
+      console.log(error);
+      callback("not ok");
+    }
+    else{
+      callback("ok");
+    }
+  });
+};
 
-  add_employee(testDoc,function(res){
+  var testDoc={"submitted_by":"58da31b4ce06742b4c4f7dbf","self_score":"80","personal_details":{"_id":"58da31b4ce06742b4c4f7dc1","name":"Akkineni Susmitha","code":"234","date":"1995-12-26T18:30:00.000Z","father_name":"Naga Raju","gender":"female","email":"susmitha.akkineni999@gmail.com","designation":"HR","phone_number":7896541300,"key":"58da31b4ce06742b4c4f7dbf"},"salary_details":{"_id":"58e126fa6266dd9cebb7d8b6","key":"58da31b4ce06742b4c4f7dbf","ctc":"30000","variable_bonus":"3000","basic":"1000","house_rent_allowance":"2000","conveyance_allowance":"1000","medical_allowance":"2000","special_allowance":"1000","profession_tax":"2000"},"peer_score":62,"overall_score":71};
+
+  send_appraisal(testDoc,function(res){
     console.log("res"+res);
   });

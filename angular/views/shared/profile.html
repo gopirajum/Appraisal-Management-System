@@ -1,8 +1,8 @@
 <div class="row" ng-controller="EmployeesCtrl">
   <div class="col-md-3 profileLeft">
-    <div class="imgAbt">
+    <!--<div class="imgAbt">
       <img  width="200" height="220" src="/angular/assets/images/bg-2.jpg">
-    </div>
+    </div><-->
     <div><h1>Welcome<br>{{personal_details.name}} !!!</h1></div><br>
     <div><h3>{{personal_details.designation}}</h3></div>
   </div>
@@ -90,7 +90,7 @@
                         <md-datepicker ng-model="official_details.joining_date" md-placeholder="Enter Joining Date"></md-datepicker>
                       </md-input-container>
                       <md-input-container flex="50">
-                        <input type="number" ng-model="confirmation_period" placeholder="Confirmation Period" />
+                        <input type="number" ng-model="official_details.confirmation_period" placeholder="Confirmation Period"/>
                       </md-input-container>
                     </div>
                     <div layout="row">
@@ -104,7 +104,7 @@
                       </md-input-container>
                       <md-input-container flex="50">
                         <label>Department</label>
-                        <md-select name="dept" ng-model="official_details.department">
+                        <md-select name="dept" ng-model="official_details.department"> 
                           <md-option value="development">Development</md-option>
                           <md-option value="qa">QA</md-option>
                           <md-option value="hr">HR</md-option>
@@ -114,7 +114,7 @@
                     <div layout="row">
                       <md-input-container flex="50">
                         <label>Designation</label>
-                        <md-select name="design" ng-model="official_details.designation">
+                        <md-select name="design" ng-model="official_details.designation" >
                           <md-option value="Senior Software Engineer">Senior Software Engineer</md-option>
                           <md-option value="Software Engineer">Software Engineer</md-option>
                           <md-option value="Manager">Manager</md-option>
@@ -124,7 +124,7 @@
                       </md-input-container>
                       <md-input-container flex="50">
                         <label>Location</label>
-                        <md-select name="loc" ng-model="official_details.location">
+                        <md-select name="loc" ng-model="official_details.location" >
                           <md-option value="hyderabad">Hyderabad</md-option>
                           <md-option value="bangalore">Bangalore</md-option>
                           <md-option value="mumbai">Mumbai</md-option>
@@ -134,10 +134,10 @@
                     <div layout="row">
                       <md-input-container flex="50">
                         <label>Manager Name</label>
-                        <md-select name="mname" ng-model="official_details.manager_name">
-                          <md-option value="a">A</md-option>
-                          <md-option value="b">B</md-option>
-                          <md-option value="c">C</md-option>
+                        <md-select name="mname" ng-model="official_details.manager_name" >
+                          <md-option value="Sneha">Sneha</md-option>
+                          <md-option value="Shyam">Shyam</md-option>
+                          <md-option value="Gopi raju">Gopi Raju</md-option>
                         </md-select>
                       </md-input-container>
                       <md-input-container flex="50">
@@ -181,12 +181,12 @@
                   <form name="SalaryForm" class="test">
                     <md-input-container class="md-block">
                       <label>Actual CTC</label>
-                      <input type="ctc" name="ctc" ng-model="salary.ctc" />
+                      <input type="ctc" name="ctc" ng-model="salary.ctc" ng-readonly="true" />
                       <div ng-messages="salary.ctc.$error" role="alert"></div>
                     </md-input-container>
                     <md-input-container class="md-block">
                       <label>Variable Bonus</label>
-                      <input type="vbonus" name="vbonus" ng-model="salary.variable_bonus" />
+                      <input type="vbonus" name="vbonus" ng-model="salary.variable_bonus" ng-readonly="true" />
                       <div ng-messages="salary.vbonus.$error" role="alert"></div>
                     </md-input-container>
                     <h4>Display CTC Based Components<input type="checkbox" ng-model="myCheck"></h4>
@@ -194,36 +194,36 @@
                       <div layout="row">
                         <md-input-container flex="50">
                           <label>Basic</label>
-                          <input name="basic" ng-model="salary.basic">
+                          <input name="basic" ng-model="salary.basic" ng-readonly="true">
                           <div ng-messages="salary.basic.$error"></div>
                         </md-input-container>
                         <md-input-container flex="50">
                            <label>House Rent Allowance</label>
-                          <input name="hra" ng-model="salary.house_rent_allowance">
+                          <input name="hra" ng-model="salary.house_rent_allowance" ng-readonly="true">
                           <div ng-messages="salary.hra.$error"></div>
                         </md-input-container>
                       </div>
                       <div layout="row">
                         <md-input-container flex="50">
                           <label>Conveyance Allowance</label>
-                          <input name="callow" ng-model="salary.conveyance_allowance">
+                          <input name="callow" ng-model="salary.conveyance_allowance" ng-readonly="true">
                           <div ng-messages="salary.callow.$error"></div>
                         </md-input-container>
                         <md-input-container flex="50">
                            <label>Medical Allowance</label>
-                          <input name="mallow" ng-model="salary.medical_allowance">
+                          <input name="mallow" ng-model="salary.medical_allowance" ng-readonly="true">
                           <div ng-messages="salary.mallow.$error"></div>
                         </md-input-container>
                       </div>
                       <div layout="row">
                         <md-input-container flex="50">
                           <label>Special Allowance</label>
-                          <input name="sallow" ng-model="salary.special_allowance">
+                          <input name="sallow" ng-model="salary.special_allowance" ng-readonly="true">
                           <div ng-messages="salary.sallow.$error"></div>
                         </md-input-container>
                         <md-input-container flex="50">
                            <label>Profession Tax</label>
-                          <input name="ptax" ng-model="salary.profession_tax">
+                          <input name="ptax" ng-model="salary.profession_tax" ng-readonly="true">
                           <div ng-messages="salary.ptax.$error"></div>
                         </md-input-container>
                       </div>
@@ -235,14 +235,7 @@
               var app = angular.module('myApp', ['ngAnimate']);
               </script>
             </md-content>
-          </md-tab>
-          <md-tab label="Employee Docs">
-            <md-content class="md-padding">
-              <h5 class="md-display-1">Upload the documents if any</h5><br><br>
-              <input type = "file" file-model = "myFile"/><br><br><br>
-              <button ng-click = "uploadFile()">upload me</button>
-            </md-content>
-          </md-tab>      
+          </md-tab>  
         </md-tabs>
       </md-content>
     </div>

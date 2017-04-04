@@ -1,5 +1,5 @@
 <div class="col-md-offset-2 col-md-8 col-sm-offset-3 col-sm-6 col-xs-offset-2 col-xs-8" ng-init="progress_load()">
-  <h1 align="start">Welcome</h1>
+  <h1 align="start">Scores of {{score.personal_details.name}}</h1>
   <div layout="column" ng-cloak>
     <md-content class="md-padding">
       <form>
@@ -21,17 +21,13 @@
               </div><br><br>
           <div layout="row" layout-align="center">
               <div flex="30">
-                  <md-button align="center" class="md-raised md-primary login" ng-click="">Send Appraisal</md-button>
+                  <md-button align="center" class="md-raised md-primary login" ng-click="send_appraisal(score)">Send Appraisal</md-button>
               </div>
           </div>
       </form>
     </md-content>
   </div>
 </div>
-
-
-
-
 
 
 
