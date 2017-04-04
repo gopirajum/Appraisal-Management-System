@@ -1,0 +1,25 @@
+<div class="col-md-offset-2 col-md-8 col-sm-offset-3 col-sm-6 col-xs-offset-2 col-xs-8" 
+  ng-controller="DemoCtrl" >
+  <h1 align="start">Feedback{{}}</h1>
+  <div layout="column" ng-cloak>
+    <md-content class="md-padding">
+      <form>
+        <div ng-repeat="x in questions"><h2>{{x.question_num+". "}} {{x.question}}</h2>
+          <md-radio-group ng-model="x.answer">
+            <md-radio-button value="10"><h5> Exceptional </h5></md-radio-button>
+            <md-radio-button value="7.5"> <h5>More Than Satisfactory </h5></md-radio-button>
+            <md-radio-button value="5"><h5> Satisfactory </h5></md-radio-button>
+            <md-radio-button value="2.5"><h5> Needs Improvement </h5></md-radio-button>
+          </md-radio-group>
+        </div>
+        <md-input-container class="md-block">
+          <div layout="row" layout-align="end">
+            <div flex="30">
+              <md-button align="center" class="md-raised md-primary login" ng-click="peer_form_submit(questions)">Send</md-button>
+            </div>
+          </div>
+        </md-input-container>
+      </form>
+    </md-content>
+  </div>
+</div>

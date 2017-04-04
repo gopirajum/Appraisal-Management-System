@@ -11,11 +11,14 @@
     </div>
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav navbar-right">
-        <li>
-          <a ui-sref="home.add_employee"><ng-md-icon icon="person_add" style="fill: white" size="25"></ng-md-icon></a>
+        <li ng-if="headertest == 'HR'">
+         <a ui-sref="home.appraisal"><ng-md-icon icon="send" style="fill: white" size="25"></ng-md-icon></a>
+        </li>
+        <li ng-if="headertest == 'HR'">
+         <a ui-sref="home.add_employee"><ng-md-icon icon="person_add" style="fill: white" size="25"></ng-md-icon></a>
         </li>
         <li>
-          <a ui-sref="root"><ng-md-icon icon="power_settings_new" style="fill: white" size="25"></ng-md-icon></a>
+          <a ng-click="logout()"><ng-md-icon icon="power_settings_new" style="fill: white" size="25"></ng-md-icon></a>
         </li>
       </ul>
     </div>

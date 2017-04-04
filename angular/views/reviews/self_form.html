@@ -1,0 +1,19 @@
+<div class="col-md-offset-2 col-md-8 col-sm-offset-3 col-sm-6 col-xs-offset-2 col-xs-8" >
+ <h1 align="start">Self Assessment{{}}</h1>
+ <div layout="column" ng-cloak>
+   <md-content class="md-padding">
+     <form>
+       <div ng-repeat="x in questions"><h4>{{x.question_num+". "}} {{x.question}}</h4>
+         <textarea style="width:100%" ng-model="x.answer"></textarea>
+       </div>
+       <md-input-container class="md-block">
+         <div layout="row" layout-align="end">
+           <div flex="30">
+             <md-button align="center" class="md-raised md-primary login" ng-click="self_form_submit(questions)">Submit</md-button>
+           </div>
+         </div>
+       </md-input-container>
+     </form>
+   </md-content>
+ </div>
+</div>
